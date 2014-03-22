@@ -13,7 +13,7 @@
 #include "modelclass.h"
 #include "lightshaderclass.h"
 #include "lightclass.h"
-
+#include "OBJImporter.h"
 
 /////////////
 // GLOBALS //
@@ -47,6 +47,7 @@ private:
 	ModelClass* m_Model;
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;
+	char* modelLocation;
 };
 
 #endif

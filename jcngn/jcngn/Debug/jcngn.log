@@ -1,5 +1,5 @@
-﻿Build started 22/03/2014 14:20:17.
-     1>Project "c:\Users\James\documents\visual studio 2010\Projects\jcngn\jcngn\jcngn.vcxproj" on node 2 (build target(s)).
+﻿Build started 22/03/2014 23:39:49.
+     1>Project "C:\Users\James\Documents\GitHub\jc_ngn\jcngn\jcngn\jcngn.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\jcngn.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
@@ -8,12 +8,13 @@
          Generating Code...
          Compiling...
          systemclass.cpp
-         main.cpp
          Generating Code...
+         Skipping... (no relevant changes detected)
+         main.cpp
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"c:\users\james\documents\visual studio 2010\Projects\jcngn\Debug\jcngn.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\jcngn.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"c:\users\james\documents\visual studio 2010\Projects\jcngn\Debug\jcngn.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"c:\users\james\documents\visual studio 2010\Projects\jcngn\Debug\jcngn.lib" /MACHINE:X86 Debug\jcngn.exe.embed.manifest.res
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\jcngn.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.lib" /MACHINE:X86 Debug\jcngn.exe.embed.manifest.res
          Debug\cameraclass.obj
          Debug\colorshaderclass.obj
          Debug\d3dclass.obj
@@ -23,6 +24,7 @@
          Debug\lightshaderclass.obj
          Debug\main.obj
          Debug\modelclass.obj
+         Debug\OBJImporter.obj
          Debug\systemclass.obj
          Debug\textureclass.obj
          Debug\textureshaderclass.obj
@@ -31,12 +33,12 @@
          All outputs are up-to-date.
        LinkEmbedManifest:
          All outputs are up-to-date.
-         jcngn.vcxproj -> c:\users\james\documents\visual studio 2010\Projects\jcngn\Debug\jcngn.exe
+         jcngn.vcxproj -> C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.exe
        FinalizeBuildStatus:
          Deleting file "Debug\jcngn.unsuccessfulbuild".
          Touching "Debug\jcngn.lastbuildstate".
-     1>Done Building Project "c:\Users\James\documents\visual studio 2010\Projects\jcngn\jcngn\jcngn.vcxproj" (build target(s)).
+     1>Done Building Project "C:\Users\James\Documents\GitHub\jc_ngn\jcngn\jcngn\jcngn.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.36
+Time Elapsed 00:00:01.99

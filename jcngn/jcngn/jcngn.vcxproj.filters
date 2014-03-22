@@ -40,6 +40,15 @@
     <Filter Include="Source Files\Model">
       <UniqueIdentifier>{d3a9886e-f8ef-4937-9b80-32e3014c930d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{0486a703-106c-4c4c-9a3c-d18f76616c87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Importers">
+      <UniqueIdentifier>{f90a08b4-b715-46f4-9c6b-ff245de3afc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Importers">
+      <UniqueIdentifier>{2fec37a1-f2ba-48a4-ae96-5eef3add1b3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -78,6 +87,9 @@
     <ClCompile Include="modelclass.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
+    <ClCompile Include="OBJImporter.cpp">
+      <Filter>Source Files\Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="colorshaderclass.h">
@@ -113,5 +125,16 @@
     <ClInclude Include="systemclass.h">
       <Filter>Header Files\System</Filter>
     </ClInclude>
+    <ClInclude Include="OBJImporter.h">
+      <Filter>Header Files\Importers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="light.ps">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="light.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
