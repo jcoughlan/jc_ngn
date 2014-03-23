@@ -235,7 +235,10 @@ bool GraphicsClass::Render(float rotation)
 	sphereNode->setRotationX(-rotation);
 	result =sphereNode->Draw(m_D3D->GetDeviceContext(),worldMatrix, viewMatrix, projectionMatrix, m_LightShader, m_Light, m_Camera);
 	result = cubeNode->Draw(m_D3D->GetDeviceContext(),worldMatrix, viewMatrix, projectionMatrix, m_LightShader, m_Light, m_Camera);
-	
+	planeNode->setRotationX(90 * DEG_2_RAD);
+	planeNode->setScale(2.0,2.0,2.0);
+	planeNode->setTranslation(0,-2,0);
+	result = planeNode->Draw(m_D3D->GetDeviceContext(),worldMatrix, viewMatrix, projectionMatrix, m_LightShader, m_Light, m_Camera);
 	if(!result)
 	{
 		return false;

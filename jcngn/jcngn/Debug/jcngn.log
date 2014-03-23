@@ -1,12 +1,12 @@
-﻿Build started 23/03/2014 18:28:19.
+﻿Build started 23/03/2014 22:34:43.
      1>Project "C:\Users\James\Documents\GitHub\jc_ngn\jcngn\jcngn\jcngn.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\jcngn.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt graphicsclass.cpp main.cpp modelclass.cpp systemclass.cpp
-         modelclass.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt graphicsclass.cpp main.cpp systemclass.cpp
          graphicsclass.cpp
      1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(61): warning C4482: nonstandard extension used: enum 'SCENENODE_TYPE' used in qualified name
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(238): warning C4305: 'argument' : truncation from 'double' to 'float'
          Generating Code...
          Compiling...
          systemclass.cpp
@@ -50,4 +50,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.24
+Time Elapsed 00:00:02.44

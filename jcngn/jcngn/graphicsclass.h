@@ -20,6 +20,8 @@
 #include <iostream>
 #include <string>
 using namespace std;
+
+#define DEG_2_RAD 0.0174532925 
 /////////////
 // GLOBALS //
 /////////////

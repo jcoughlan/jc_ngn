@@ -47,6 +47,8 @@ public:
 
 	bool InitializeFromTextFile(ID3D11Device*, char*, WCHAR*);
 	bool InitializePlane(ID3D11Device*, WCHAR*);
+	bool InitializeTriangle(ID3D11Device* device, WCHAR* textureFilename);
+
 	void Shutdown();
 	void Render(ID3D11DeviceContext*);
 
@@ -70,6 +72,7 @@ private:
 	int m_vertexCount, m_indexCount;
 	TextureClass* m_Texture;
 	ModelType* m_model;
+	int* setIndices;
 };
 
 #endif

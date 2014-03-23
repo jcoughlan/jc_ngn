@@ -10,6 +10,7 @@ ModelClass::ModelClass()
 	m_indexBuffer = 0;
 	m_Texture = 0;
 	m_model = 0;
+	setIndices = 0;
 }
 
 
@@ -55,12 +56,98 @@ bool ModelClass::InitializeFromTextFile(ID3D11Device* device, char* modelFilenam
 
 bool ModelClass::InitializePlane(ID3D11Device* device, WCHAR* textureFilename)
 {
-	m_vertexCount = 
+	m_vertexCount = 4;
+	m_indexCount = 6;
 	m_model = new ModelType[m_vertexCount];
 	if(!m_model)
 	{
 		return false;
 	}
+
+	
+	m_model[0].x = -1;
+	m_model[0].y = -1;
+	m_model[0].z = 0;
+	m_model[0].tu = -1;
+	m_model[0].tv = -1;
+
+	m_model[1].x = -1;
+	m_model[1].y = 1;
+	m_model[1].z = 0;
+	m_model[1].tu = -1;
+	m_model[1].tv = 1;
+
+	m_model[2].x = 1;
+	m_model[2].y = 1;
+	m_model[2].z = 0;
+	m_model[2].tu = 1;
+	m_model[2].tv = 1;
+
+	m_model[3].x =	1;
+	m_model[3].y = -1;
+	m_model[3].z =	0;
+	m_model[3].tu =	1;
+	m_model[3].tv = -1;
+
+	setIndices = new int[m_indexCount];
+	setIndices[0] = 0;
+	setIndices[1] = 1;
+	setIndices[2] = 2;
+	setIndices[3] = 3;
+	setIndices[4] = 0;
+	setIndices[5] = 2;
+
+
+	/*for(i=0; i<m_vertexCount; i++)
+	{
+		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;
+		fin >> m_model[i].tu >> m_model[i].tv;
+		fin >> m_model[i].nx >> m_model[i].ny >> m_model[i].nz;
+	}*/
+
+	int result = InitializeBuffers(device);
+	if(!result)
+	{
+		return false;
+	}
+
+	// Load the texture for this model.
+	result = LoadTexture(device, textureFilename);
+	if(!result)
+	{
+		return false;
+	}
+	
+	return true;
+}
+
+
+bool ModelClass::InitializeTriangle(ID3D11Device* device, WCHAR* textureFilename)
+{
+	m_vertexCount = 3;
+	m_indexCount = m_vertexCount;
+
+	
+
+	m_model = new ModelType[m_vertexCount];
+	if(!m_model)
+	{
+		return false;
+	}	
+
+	m_model[2].x = 1;
+	m_model[2].y = -1;
+	m_model[2].z = 0;
+
+	m_model[1].x = 0;
+	m_model[1].y = 1;
+	m_model[1].z = 0;
+
+	m_model[0].x = -1;
+	m_model[0].y = -1;
+	m_model[0].z = 0;
+
+	
 	int result = InitializeBuffers(device);
 	if(!result)
 	{
@@ -143,8 +230,15 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 		vertices[i].position = D3DXVECTOR3(m_model[i].x, m_model[i].y, m_model[i].z);
 		vertices[i].texture = D3DXVECTOR2(m_model[i].tu, m_model[i].tv);
 		vertices[i].normal = D3DXVECTOR3(m_model[i].nx, m_model[i].ny, m_model[i].nz);
+		
+	if (!setIndices)
+		indices[i] = i;	
+	}
 
-		indices[i] = i;
+	if (setIndices)
+	{
+		for (int i = 0; i < m_indexCount;i++)
+			indices[i] = setIndices[i];
 	}
 
 	// Set up the description of the static vertex buffer.
@@ -212,6 +306,11 @@ void ModelClass::ShutdownBuffers()
 	{
 		m_vertexBuffer->Release();
 		m_vertexBuffer = 0;
+	}
+
+	if (setIndices)
+	{
+		delete setIndices;
 	}
 
 	return;
