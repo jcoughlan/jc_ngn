@@ -45,7 +45,8 @@ public:
 	ModelClass(const ModelClass&);
 	~ModelClass();
 
-	bool Initialize(ID3D11Device*, char*, WCHAR*);
+	bool InitializeFromTextFile(ID3D11Device*, char*, WCHAR*);
+	bool InitializePlane(ID3D11Device*, WCHAR*);
 	void Shutdown();
 	void Render(ID3D11DeviceContext*);
 

@@ -23,7 +23,7 @@ ModelClass::~ModelClass()
 }
 
 
-bool ModelClass::Initialize(ID3D11Device* device, char* modelFilename, WCHAR* textureFilename)
+bool ModelClass::InitializeFromTextFile(ID3D11Device* device, char* modelFilename, WCHAR* textureFilename)
 {
 	bool result;
 
@@ -52,6 +52,30 @@ bool ModelClass::Initialize(ID3D11Device* device, char* modelFilename, WCHAR* te
 	return true;
 }
 
+
+bool ModelClass::InitializePlane(ID3D11Device* device, WCHAR* textureFilename)
+{
+	m_vertexCount = 
+	m_model = new ModelType[m_vertexCount];
+	if(!m_model)
+	{
+		return false;
+	}
+	int result = InitializeBuffers(device);
+	if(!result)
+	{
+		return false;
+	}
+
+	// Load the texture for this model.
+	result = LoadTexture(device, textureFilename);
+	if(!result)
+	{
+		return false;
+	}
+	
+	return true;
+}
 
 void ModelClass::Shutdown()
 {

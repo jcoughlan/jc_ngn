@@ -1,20 +1,28 @@
-﻿Build started 22/03/2014 23:39:49.
+﻿Build started 23/03/2014 18:28:19.
      1>Project "C:\Users\James\Documents\GitHub\jc_ngn\jcngn\jcngn\jcngn.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\jcngn.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt graphicsclass.cpp main.cpp systemclass.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt graphicsclass.cpp main.cpp modelclass.cpp systemclass.cpp
+         modelclass.cpp
          graphicsclass.cpp
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(61): warning C4482: nonstandard extension used: enum 'SCENENODE_TYPE' used in qualified name
          Generating Code...
          Compiling...
          systemclass.cpp
-         Generating Code...
-         Skipping... (no relevant changes detected)
          main.cpp
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\main.cpp(13): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(249) : see declaration of 'freopen'
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\main.cpp(14): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(249) : see declaration of 'freopen'
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\main.cpp(15): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(249) : see declaration of 'freopen'
+         Generating Code...
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\jcngn.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.lib" /MACHINE:X86 Debug\jcngn.exe.embed.manifest.res
+         Debug\bitmapclass.obj
          Debug\cameraclass.obj
          Debug\colorshaderclass.obj
          Debug\d3dclass.obj
@@ -25,6 +33,7 @@
          Debug\main.obj
          Debug\modelclass.obj
          Debug\OBJImporter.obj
+         Debug\scenenode.obj
          Debug\systemclass.obj
          Debug\textureclass.obj
          Debug\textureshaderclass.obj
@@ -41,4 +50,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.99
+Time Elapsed 00:00:03.24

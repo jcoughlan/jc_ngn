@@ -49,6 +49,12 @@
     <Filter Include="Source Files\Importers">
       <UniqueIdentifier>{2fec37a1-f2ba-48a4-ae96-5eef3add1b3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SceneNodes">
+      <UniqueIdentifier>{d411f719-9ac0-4704-8580-ab67b6893aac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneNodes">
+      <UniqueIdentifier>{7361f83e-074c-4769-9828-06f8139ec659}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -61,9 +67,6 @@
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="lightclass.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="graphicsclass.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="d3dclass.cpp">
@@ -90,6 +93,15 @@
     <ClCompile Include="OBJImporter.cpp">
       <Filter>Source Files\Importers</Filter>
     </ClCompile>
+    <ClCompile Include="bitmapclass.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphicsclass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scenenode.cpp">
+      <Filter>Source Files\SceneNodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="colorshaderclass.h">
@@ -105,9 +117,6 @@
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="d3dclass.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="graphicsclass.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="lightclass.h">
@@ -127,6 +136,15 @@
     </ClInclude>
     <ClInclude Include="OBJImporter.h">
       <Filter>Header Files\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="bitmapclass.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphicsclass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scenenode.h">
+      <Filter>Header Files\SceneNodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

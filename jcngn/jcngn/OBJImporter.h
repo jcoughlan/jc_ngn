@@ -9,6 +9,9 @@
 //////////////
 #include <iostream>
 #include <fstream>
+#include <stdio.h>
+#include <string.h>
+#include <cstring>
 using namespace std;
 
 
@@ -37,11 +40,11 @@ public:
 	OBJImporter();
 	~OBJImporter();
 
-	char* ObjToTextFile (char filename[256]);
+	string ObjToTextFile (char filename[256]);
 private:
 	void GetModelFile(char*);
 	bool ReadFileCounts(char*, int&, int&, int&, int&);
-	char* LoadDataStructures(char*, int, int, int, int);
+	string LoadDataStructures(char*, int, int, int, int);
 
 };
 

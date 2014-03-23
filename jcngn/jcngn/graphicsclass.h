@@ -10,11 +10,16 @@
 ///////////////////////
 #include "d3dclass.h"
 #include "cameraclass.h"
-#include "modelclass.h"
 #include "lightshaderclass.h"
 #include "lightclass.h"
 #include "OBJImporter.h"
-
+#include "scenenode.h"
+#include "inputclass.h"
+#include "colorshaderclass.h"
+#include <Windows.h>
+#include <iostream>
+#include <string>
+using namespace std;
 /////////////
 // GLOBALS //
 /////////////
@@ -22,8 +27,6 @@ const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
 const float SCREEN_DEPTH = 1000.0f;
 const float SCREEN_NEAR = 0.1f;
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: GraphicsClass
 ////////////////////////////////////////////////////////////////////////////////
@@ -37,6 +40,7 @@ public:
 	bool Initialize(int, int, HWND);
 	void Shutdown();
 	bool Frame();
+	bool HandleInput(unsigned int keyIndex);
 
 private:
 	bool Render(float);
@@ -44,10 +48,11 @@ private:
 private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
-	ModelClass* m_Model;
+	SceneNode* cubeNode;
+	SceneNode* planeNode;
+	SceneNode* sphereNode;
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;
-	char* modelLocation;
 };
 
 #endif

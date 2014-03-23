@@ -8,11 +8,11 @@ GraphicsClass::GraphicsClass()
 {
 	m_D3D = 0;
 	m_Camera = 0;
-	m_Model = 0;
+	cubeNode = 0;
+	sphereNode = 0;
+	planeNode = 0;
 	m_LightShader = 0;
 	m_Light = 0;
-	OBJImporter*  objImporter = new OBJImporter();;
-	modelLocation = objImporter->ObjToTextFile("../Engine/data/cube.obj");
 }
 
 
@@ -56,21 +56,9 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	// Set the initial position of the camera.
 	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
 	
-	// Create the model object.
-	m_Model = new ModelClass;
-	if(!m_Model)
-	{
-		return false;
-	}
-
-	// Initialize the model object.
-	result = m_Model->Initialize(m_D3D->GetDevice(), modelLocation, L"../Engine/data/seafloor.dds");
-	if(!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
-		return false;
-	}
-
+	cubeNode = new SceneNode("../Engine/data/cube.obj", m_D3D->GetDevice() );
+	sphereNode = new SceneNode("../Engine/data/sphere.obj", m_D3D->GetDevice() );
+	planeNode = new SceneNode( SCENENODE_TYPE::PLANE_MESH, m_D3D->GetDevice());
 	// Create the light shader object.
 	m_LightShader = new LightShaderClass;
 	if(!m_LightShader)
@@ -99,7 +87,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
 	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
 	//lower = stronger
-	m_Light->SetSpecularPower(100.0f);
+	m_Light->SetSpecularPower(1.0f);
 
 	return true;
 }
@@ -123,11 +111,18 @@ void GraphicsClass::Shutdown()
 	}
 
 	// Release the model object.
-	if(m_Model)
+	if(sphereNode)
 	{
-		m_Model->Shutdown();
-		delete m_Model;
-		m_Model = 0;
+		//TODO shutdown
+		delete sphereNode;
+		sphereNode = 0;
+	}
+
+	if(cubeNode)
+	{
+		//TODO shutdown
+		delete cubeNode;
+		cubeNode = 0;
 	}
 
 	// Release the camera object.
@@ -172,6 +167,49 @@ bool GraphicsClass::Frame()
 	return true;
 }
 
+bool GraphicsClass::HandleInput(unsigned int keyIndex){
+
+	///To handle all key presses required
+	//Codes can be found at http://www.asciitable.com/
+
+	//cout << "HandleInput (DOWN): " << keyIndex << endl
+
+	float camX,camY,camZ = 0.0f;
+	camX = m_Camera->GetPosition().x;
+	camY = m_Camera->GetPosition().y;
+	camZ = m_Camera->GetPosition().z;
+
+	float speed = 0.1f;
+	switch (keyIndex)
+	{		
+		//movecameraforward
+		//"W"
+		case(87):  m_Camera->SetPosition(camX, camY,camZ+speed);break;
+			
+		//movecameraBack
+		//"S"
+		case(83): m_Camera->SetPosition(camX, camY,camZ-speed);break;
+
+		//movecameraLeft
+		//"A"
+		case(65):m_Camera->SetPosition(camX-speed, camY,camZ);break;
+
+		//movecameraRight
+		//"D"
+		case(68): m_Camera->SetPosition(camX+speed, camY,camZ);break;
+
+		//movecameraup
+		case(VK_SPACE): m_Camera->SetPosition(camX, camY+speed,camZ);break;
+
+		//movecameradown
+		case(VK_CONTROL): m_Camera->SetPosition(camX, camY-speed,camZ);break;
+
+		default:cout << "HandleInput (Not handled): " << keyIndex << endl; break;
+	}
+	return true;
+
+}
+
 
 bool GraphicsClass::Render(float rotation)
 {
@@ -180,7 +218,7 @@ bool GraphicsClass::Render(float rotation)
 
 
 	// Clear the buffers to begin the scene.
-	m_D3D->BeginScene(0.5f, 0.5f, 0.5f, 1.0f);
+	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// Generate the view matrix based on the camera's position.
 	m_Camera->Render();
@@ -188,18 +226,16 @@ bool GraphicsClass::Render(float rotation)
 	// Get the world, view, and projection matrices from the camera and d3d objects.
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_D3D->GetWorldMatrix(worldMatrix);
-	m_D3D->GetProjectionMatrix(projectionMatrix);
+	m_D3D->GetProjectionMatrix(projectionMatrix);		
 
-	// Rotate the world matrix by the rotation value so that the triangle will spin.
-	D3DXMatrixRotationY(&worldMatrix, rotation);
-
-	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	m_Model->Render(m_D3D->GetDeviceContext());
-
-	// Render the model using the light shader.
-	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
-				       m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), 
-				       m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+	// Draw our meshes	
+	cubeNode->setTranslation(0,-1,0);
+	cubeNode->setRotationY(rotation);
+	sphereNode->setTranslation(0,1,2);
+	sphereNode->setRotationX(-rotation);
+	result =sphereNode->Draw(m_D3D->GetDeviceContext(),worldMatrix, viewMatrix, projectionMatrix, m_LightShader, m_Light, m_Camera);
+	result = cubeNode->Draw(m_D3D->GetDeviceContext(),worldMatrix, viewMatrix, projectionMatrix, m_LightShader, m_Light, m_Camera);
+	
 	if(!result)
 	{
 		return false;

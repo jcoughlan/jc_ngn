@@ -137,6 +137,11 @@ bool SystemClass::Frame()
 	{
 		return false;
 	}
+	
+	for (int i = 0; i < 256; i++)
+		if(m_Input->IsKeyDown(i))	
+			 m_Graphics->HandleInput(i);	
+	
 
 	// Do the frame processing for the graphics object.
 	result = m_Graphics->Frame();
@@ -192,7 +197,7 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	m_hinstance = GetModuleHandle(NULL);
 
 	// Give the application a name.
-	m_applicationName = L"Engine";
+	m_applicationName = L"JC NGN";
 
 	// Setup the windows class with default settings.
 	wc.style         = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;

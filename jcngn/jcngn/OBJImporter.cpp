@@ -9,7 +9,7 @@ OBJImporter::~OBJImporter()
 }
 
 
-char* OBJImporter::ObjToTextFile(char filename[256])
+string OBJImporter::ObjToTextFile(char filename[256])
 {
 	bool result;
 	
@@ -36,11 +36,8 @@ char* OBJImporter::ObjToTextFile(char filename[256])
 
 
 	// Now read the data from the file into the data structures and then output it in our model format.
-	char* returnResult = LoadDataStructures(filename, vertexCount, textureCount, normalCount, faceCount);
-	if(!returnResult)
-	{
-		return 0;
-	}
+	string returnResult = LoadDataStructures(filename, vertexCount, textureCount, normalCount, faceCount);
+	
 
 	// Notify the user the model has been converted.	
 
@@ -134,7 +131,7 @@ bool OBJImporter::ReadFileCounts(char* filename, int& vertexCount, int& textureC
 }
 
 
-char* OBJImporter::LoadDataStructures(char* filename, int vertexCount, int textureCount, int normalCount, int faceCount)
+string OBJImporter::LoadDataStructures(char* filename, int vertexCount, int textureCount, int normalCount, int faceCount)
 {
 	VertexType *vertices, *texcoords, *normals;
 	FaceType *faces;
@@ -251,8 +248,32 @@ char* OBJImporter::LoadDataStructures(char* filename, int vertexCount, int textu
 	// Close the file.
 	fin.close();
 
+	//make a new output file for each incoming file
+	
+	char largechars[100] ;
+	strcpy(largechars, filename);
+    char* chars_array = strtok(largechars, "/.");
+	char* finalFilename[4];
+	int index = 0;
+    while(chars_array)
+    {
+        chars_array = strtok(NULL, "/.");
+		if (index < 4)
+		{
+			finalFilename[index] = chars_array;
+			index++;
+		}
+    }
+
+
+	string of = "../Engine/data/";
+	of+= (char*)finalFilename[1];
+	of+=".txt";
+
+	char outputFile[100];
+	strcpy(outputFile, of.c_str());
 	// Open the output file.
-	fout.open("../Engine/data/model.txt");
+	fout.open(outputFile);
 	
 	// Write out the file header that our model format uses.
 	fout << "Vertex Count: " << (faceCount * 3) << endl;
@@ -313,5 +334,5 @@ char* OBJImporter::LoadDataStructures(char* filename, int vertexCount, int textu
 		faces = 0;
 	}
 
-	return "../Engine/data/model.txt";
+	return of;
 }

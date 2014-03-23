@@ -1,0 +1,57 @@
+////////////////////////////////////////////////////////////////////////////////
+// Filename: scenenode.h
+////////////////////////////////////////////////////////////////////////////////
+#ifndef _SCENENODE_H_
+#define _SCENENODE_H_
+
+///////////////////////
+// MY CLASS INCLUDES //
+///////////////////////
+#include "OBJImporter.h"
+#include "modelclass.h"
+#include "lightclass.h"
+#include "cameraclass.h"
+#include "lightshaderclass.h"
+#include <d3d11.h>
+#include <d3dx10math.h>
+/////////////////////////
+// FUNCTION PROTOTYPES //
+/////////////////////////
+
+enum SCENENODE_TYPE
+{
+	TRIANGLE_MESH,
+	PLANE_MESH,
+	OBJ_MESH,
+	UNKNOWN
+}; 
+class SceneNode
+{
+public: 
+	SceneNode(string obj_path, ID3D11Device* m_D3D);
+	SceneNode(SCENENODE_TYPE, ID3D11Device* m_D3D);
+	~SceneNode();
+
+	ModelClass* GetModel(){ return model;}
+
+	bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, LightShaderClass*, LightClass*, CameraClass*);
+	void setTranslation(float x, float y, float z);
+	void setRotationX(float angle);
+	void setRotationY(float angle);
+	void setRotationZ(float angle);
+	void setScale(float x, float y, float z);
+
+private:
+	string objTxtPath;
+	ModelClass* model;
+	OBJImporter* objImporter;
+	SCENENODE_TYPE scenenode_type;
+
+	D3DXMATRIX translationMatrix;
+	D3DXMATRIX rotationMatrixX;
+	D3DXMATRIX rotationMatrixY;
+	D3DXMATRIX rotationMatrixZ;
+	D3DXMATRIX scalingMatrix;
+};
+
+#endif
