@@ -90,6 +90,9 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	//lower = stronger
 	m_Light->SetSpecularPower(20.f);
 
+	lastMousePos[0] = 0.0;
+	lastMousePos[1] = 0.0;
+
 	return true;
 }
 
@@ -168,7 +171,29 @@ bool GraphicsClass::Frame()
 	return true;
 }
 
-bool GraphicsClass::HandleInput(unsigned int keyIndex){
+bool GraphicsClass::HandleMouseInput(int mouseX, int mouseY)
+{
+	if (lastMousePos[0] != 0.0 && lastMousePos[1] != 0.0)
+	{
+		float speed = 0.1f;
+		float camX,camY, camZ = 0.0f;
+		camX = m_Camera->GetRotation().x;
+		camY = m_Camera->GetRotation().y;
+		camZ = m_Camera->GetRotation().z;
+		float rotX = (mouseX - lastMousePos[0]) * speed;
+		float rotY = (mouseY - lastMousePos[1]) * speed;
+		m_Camera->SetRotation(camX+rotY, camY+rotX, camZ);
+	
+
+	}
+
+	lastMousePos[0] = mouseX;
+	lastMousePos[1] = mouseY;
+		
+	return true;
+}
+
+bool GraphicsClass::HandleKeyboardInput(unsigned int keyIndex){
 
 	///To handle all key presses required
 	//Codes can be found at http://www.asciitable.com/
@@ -185,25 +210,25 @@ bool GraphicsClass::HandleInput(unsigned int keyIndex){
 	{		
 		//movecameraforward
 		//"W"
-		case(87):  m_Camera->SetPosition(camX, camY,camZ+speed);break;
+		case(DIK_W):  m_Camera->SetPosition(camX, camY,camZ+speed);break;
 			
 		//movecameraBack
 		//"S"
-		case(83): m_Camera->SetPosition(camX, camY,camZ-speed);break;
+		case(DIK_S): m_Camera->SetPosition(camX, camY,camZ-speed);break;
 
 		//movecameraLeft
 		//"A"
-		case(65):m_Camera->SetPosition(camX-speed, camY,camZ);break;
+		case(DIK_A):m_Camera->SetPosition(camX-speed, camY,camZ);break;
 
 		//movecameraRight
 		//"D"
-		case(68): m_Camera->SetPosition(camX+speed, camY,camZ);break;
+		case(DIK_D): m_Camera->SetPosition(camX+speed, camY,camZ);break;
 
 		//movecameraup
-		case(VK_SPACE): m_Camera->SetPosition(camX, camY+speed,camZ);break;
+		case(DIK_SPACE): m_Camera->SetPosition(camX, camY+speed,camZ);break;
 
 		//movecameradown
-		case(VK_CONTROL): m_Camera->SetPosition(camX, camY-speed,camZ);break;
+		case(DIK_LCONTROL): m_Camera->SetPosition(camX, camY-speed,camZ);break;
 
 		default:cout << "HandleInput (Not handled): " << keyIndex << endl; break;
 	}

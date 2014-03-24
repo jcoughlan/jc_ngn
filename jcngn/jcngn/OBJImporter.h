@@ -48,7 +48,7 @@ private:
 	bool fexists(const char *filename)
 	{
 	 ifstream ifile(filename);
-	return ifile;
+		return ifile;
 	}
 };
 

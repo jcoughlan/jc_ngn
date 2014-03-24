@@ -42,12 +42,13 @@ public:
 	bool Initialize(int, int, HWND);
 	void Shutdown();
 	bool Frame();
-	bool HandleInput(unsigned int keyIndex);
-
+	bool HandleKeyboardInput(unsigned int keyIndex);
+	bool HandleMouseInput(int mouseX, int mouseY);
 private:
 	bool Render(float);
 
 private:
+	float lastMousePos[2];
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
 	SceneNode* cubeNode;
