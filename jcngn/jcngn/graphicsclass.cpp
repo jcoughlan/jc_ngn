@@ -54,11 +54,12 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Set the initial position of the camera.
-	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
-	
+	m_Camera->SetPosition(0.0f, 3.0f, -10.0f);
+	m_Camera->SetRotation(20.0f, 0.0f,0.0f);
 	cubeNode = new SceneNode("../Engine/data/cube.obj", m_D3D->GetDevice() );
 	sphereNode = new SceneNode("../Engine/data/sphere.obj", m_D3D->GetDevice() );
 	planeNode = new SceneNode( SCENENODE_TYPE::PLANE_MESH, m_D3D->GetDevice());
+	
 	// Create the light shader object.
 	m_LightShader = new LightShaderClass;
 	if(!m_LightShader)
@@ -87,7 +88,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
 	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
 	//lower = stronger
-	m_Light->SetSpecularPower(1.0f);
+	m_Light->SetSpecularPower(20.f);
 
 	return true;
 }
@@ -215,7 +216,6 @@ bool GraphicsClass::Render(float rotation)
 {
 	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix;
 	bool result;
-
 
 	// Clear the buffers to begin the scene.
 	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);

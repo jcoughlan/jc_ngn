@@ -44,8 +44,12 @@ public:
 private:
 	void GetModelFile(char*);
 	bool ReadFileCounts(char*, int&, int&, int&, int&);
-	string LoadDataStructures(char*, int, int, int, int);
-
+	string LoadDataStructures(char*, int, int, int, int, char*);
+	bool fexists(const char *filename)
+	{
+	 ifstream ifile(filename);
+	return ifile;
+	}
 };
 
 #endif

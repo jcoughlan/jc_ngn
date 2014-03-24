@@ -16,6 +16,35 @@ string OBJImporter::ObjToTextFile(char filename[256])
 	int vertexCount, textureCount, normalCount, faceCount;
 	char garbage;
 
+	cout << "Exporting model located at " << filename << endl;
+	char largechars[100] ;
+	strcpy(largechars, filename);
+    char* chars_array = strtok(largechars, "/.");
+	char* finalFilename[4];
+	int index = 0;
+    while(chars_array)
+    {
+        chars_array = strtok(NULL, "/.");
+		if (index < 4)
+		{
+			finalFilename[index] = chars_array;
+			index++;
+		}
+    }
+
+
+	string of = "../Engine/data/";
+	of+= (char*)finalFilename[1];
+	of+=".txt";
+
+	char outputFile[100];
+	strcpy(outputFile, of.c_str());
+
+	if (fexists(outputFile))
+	{
+		cout << "file already exists no need to convert" << endl;
+		return outputFile;
+	}
 
 	// Read in the name of the model file.
 	GetModelFile(filename);
@@ -36,11 +65,11 @@ string OBJImporter::ObjToTextFile(char filename[256])
 
 
 	// Now read the data from the file into the data structures and then output it in our model format.
-	string returnResult = LoadDataStructures(filename, vertexCount, textureCount, normalCount, faceCount);
+	string returnResult = LoadDataStructures(filename, vertexCount, textureCount, normalCount, faceCount, outputFile);
 	
 
 	// Notify the user the model has been converted.	
-
+	cout << "exported" << endl;
 	return returnResult;
 }
 
@@ -131,7 +160,7 @@ bool OBJImporter::ReadFileCounts(char* filename, int& vertexCount, int& textureC
 }
 
 
-string OBJImporter::LoadDataStructures(char* filename, int vertexCount, int textureCount, int normalCount, int faceCount)
+string OBJImporter::LoadDataStructures(char* filename, int vertexCount, int textureCount, int normalCount, int faceCount, char* outputFile)
 {
 	VertexType *vertices, *texcoords, *normals;
 	FaceType *faces;
@@ -250,28 +279,7 @@ string OBJImporter::LoadDataStructures(char* filename, int vertexCount, int text
 
 	//make a new output file for each incoming file
 	
-	char largechars[100] ;
-	strcpy(largechars, filename);
-    char* chars_array = strtok(largechars, "/.");
-	char* finalFilename[4];
-	int index = 0;
-    while(chars_array)
-    {
-        chars_array = strtok(NULL, "/.");
-		if (index < 4)
-		{
-			finalFilename[index] = chars_array;
-			index++;
-		}
-    }
-
-
-	string of = "../Engine/data/";
-	of+= (char*)finalFilename[1];
-	of+=".txt";
-
-	char outputFile[100];
-	strcpy(outputFile, of.c_str());
+	
 	// Open the output file.
 	fout.open(outputFile);
 	
@@ -333,6 +341,6 @@ string OBJImporter::LoadDataStructures(char* filename, int vertexCount, int text
 		delete [] faces;
 		faces = 0;
 	}
-
+	string of = outputFile;
 	return of;
 }
