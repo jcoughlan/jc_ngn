@@ -1,2 +1,20 @@
-﻿  inputclass.cpp
+﻿  graphicsclass.cpp
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(51): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(61): warning C4482: nonstandard extension used: enum 'SCENENODE_TYPE' used in qualified name
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(190): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(191): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(263): warning C4305: 'argument' : truncation from 'double' to 'float'
+  Generating Code...
+  Compiling...
+  systemclass.cpp
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(51): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
+  main.cpp
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(51): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\main.cpp(13): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(249) : see declaration of 'freopen'
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\main.cpp(14): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(249) : see declaration of 'freopen'
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\main.cpp(15): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(249) : see declaration of 'freopen'
+  Generating Code...
   jcngn.vcxproj -> C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.exe

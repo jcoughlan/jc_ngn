@@ -41,14 +41,8 @@ bool SystemClass::Initialize()
 	}
 
 	// Initialize the input object.
-	result = m_Input->Initialize(m_hinstance, m_hwnd, screenWidth, screenHeight);
-	if(!result)
-	{
-		MessageBox(m_hwnd, L"Could not initialize the input object.", L"Error", MB_OK);
-		return false;
-	}
-
-
+	m_Input->Initialize();
+	
 	// Create the graphics object.  This object will handle rendering all the graphics for this application.
 	m_Graphics = new GraphicsClass;
 	if(!m_Graphics)
@@ -129,11 +123,11 @@ void SystemClass::Run()
 			}
 		}
 
-		// Check if the user pressed escape and wants to quit.
-		if(m_Input->IsKeyDown(DIK_ESCAPE == true))
+		if(m_Input->IsKeyDown(VK_ESCAPE))
 		{
 			done = true;
 		}
+
 
 	}
 
@@ -143,17 +137,11 @@ void SystemClass::Run()
 
 bool SystemClass::Frame()
 {
-	m_Input->Frame();
 	bool result;
 
 	int mouseX, mouseY;
-	m_Input->GetMouseLocation(mouseX, mouseY);
-
-
-	for (int i = 0; i < 256;i++)
-		if (m_Input->IsKeyDown(i))
-			result = m_Graphics->HandleKeyboardInput(i);
-
+	m_Input->GetMouseCoords(mouseX, mouseY);
+	
 
 	// Do the frame processing for the graphics object.
 	result = m_Graphics->HandleMouseInput(mouseX, mouseY);
@@ -161,6 +149,11 @@ bool SystemClass::Frame()
 	{
 		return false;
 	}
+
+	for (int i = 0; i < 256;i++)
+		if (m_Input->IsKeyDown(i))
+			result = m_Graphics->HandleKeyboardInput(i);
+
 	
 
 	// Do the frame processing for the graphics object.
@@ -176,7 +169,46 @@ bool SystemClass::Frame()
 
 LRESULT CALLBACK SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 {
-	return DefWindowProc(hwnd, umsg, wparam, lparam);
+	switch(umsg)
+	{
+		// Check if a key has been pressed on the keyboard.
+		case WM_KEYDOWN:
+		{
+			// If a key is pressed send it to the input object so it can record that state.
+			m_Input->KeyDown((unsigned int)wparam);
+			return 0;
+		}
+
+		// Check if a key has been released on the keyboard.
+		case WM_KEYUP:
+		{
+			// If a key is released then send it to the input object so it can unset the state for that key.
+			m_Input->KeyUp((unsigned int)wparam);
+			return 0;
+		}
+		case WM_MOUSEMOVE:
+		{
+			 m_Input->MouseMove( wparam, lparam); // wp & lp store the co-ordinates here
+			 return 0;
+		}   
+		 case WM_LBUTTONDOWN:
+		{
+			m_Input->LButtonDown( (unsigned int)wparam, (unsigned int)lparam);
+			return 0;
+		}
+		case WM_LBUTTONUP:
+		{
+			 m_Input->LButtonUp((unsigned int) wparam, (unsigned int)lparam);
+			return 0;
+		}
+
+
+		// Any other messages send to the default message handler as our application won't make use of them.
+		default:
+		{
+			return DefWindowProc(hwnd, umsg, wparam, lparam);
+		}
+	}
 }
 
 
