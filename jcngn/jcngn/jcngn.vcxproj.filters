@@ -93,13 +93,37 @@
     <ClCompile Include="OBJImporter.cpp">
       <Filter>Source Files\Importers</Filter>
     </ClCompile>
-    <ClCompile Include="bitmapclass.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="graphicsclass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scenenode.cpp">
+      <Filter>Source Files\SceneNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="fontclass.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="fontshaderclass.cpp">
+      <Filter>Source Files\ShaderClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="bitmapclass.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="textclass.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="fpsclass.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="cpuclass.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="timerclass.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="frustumclass.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="scenenodelist.cpp">
       <Filter>Source Files\SceneNodes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -137,13 +161,37 @@
     <ClInclude Include="OBJImporter.h">
       <Filter>Header Files\Importers</Filter>
     </ClInclude>
-    <ClInclude Include="bitmapclass.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="graphicsclass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scenenode.h">
+      <Filter>Header Files\SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="fontclass.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="fontshaderclass.h">
+      <Filter>Header Files\ShaderClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="bitmapclass.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="textclass.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="fpsclass.h">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="cpuclass.h">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="timerclass.h">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="frustumclass.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="scenenodelist.h">
       <Filter>Header Files\SceneNodes</Filter>
     </ClInclude>
   </ItemGroup>

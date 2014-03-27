@@ -2,12 +2,17 @@
 // Filename: systemclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
 #include "systemclass.h"
-
+static	POINTS mousePoints;
 
 SystemClass::SystemClass()
 {
 	m_Input = 0;
 	m_Graphics = 0;
+	centreMousePos[0] = 0;
+	centreMousePos[1] = 0;
+	m_Fps = 0;
+	m_Cpu = 0;
+	m_Timer = 0;
 }
 
 
@@ -56,13 +61,68 @@ bool SystemClass::Initialize()
 	{
 		return false;
 	}
-	
+	// Create the fps object.
+	m_Fps = new FpsClass;
+	if(!m_Fps)
+	{
+		return false;
+	}
+
+	// Initialize the fps object.
+	m_Fps->Initialize();
+
+	// Create the cpu object.
+	m_Cpu = new CpuClass;
+	if(!m_Cpu)
+	{
+		return false;
+	}
+
+	// Initialize the cpu object.
+	m_Cpu->Initialize();
+
+	// Create the timer object.
+	m_Timer = new TimerClass;
+	if(!m_Timer)
+	{
+		return false;
+	}
+
+	// Initialize the timer object.
+	result = m_Timer->Initialize();
+	if(!result)
+	{
+		MessageBox(m_hwnd, L"Could not initialize the Timer object.", L"Error", MB_OK);
+		return false;
+	}
+
 	return true;
 }
 
 
 void SystemClass::Shutdown()
 {
+	// Release the timer object.
+	if(m_Timer)
+	{
+		delete m_Timer;
+		m_Timer = 0;
+	}
+
+	// Release the cpu object.
+	if(m_Cpu)
+	{
+		m_Cpu->Shutdown();
+		delete m_Cpu;
+		m_Cpu = 0;
+	}
+
+	// Release the fps object.
+	if(m_Fps)
+	{
+		delete m_Fps;
+		m_Fps = 0;
+	}
 	// Release the graphics object.
 	if(m_Graphics)
 	{
@@ -137,12 +197,16 @@ void SystemClass::Run()
 
 bool SystemClass::Frame()
 {
+	
 	bool result;
 
 	int mouseX, mouseY;
 	m_Input->GetMouseCoords(mouseX, mouseY);
 	
-
+	// Update the system stats.
+	m_Timer->Frame();
+	m_Fps->Frame();
+	m_Cpu->Frame();
 	// Do the frame processing for the graphics object.
 	result = m_Graphics->HandleMouseInput(mouseX, mouseY);
 	if(!result)
@@ -153,16 +217,14 @@ bool SystemClass::Frame()
 	for (int i = 0; i < 256;i++)
 		if (m_Input->IsKeyDown(i))
 			result = m_Graphics->HandleKeyboardInput(i);
-
 	
 
 	// Do the frame processing for the graphics object.
-	result = m_Graphics->Frame();
+	result = m_Graphics->Frame(m_Fps->GetFps(), m_Cpu->GetCpuPercentage(), m_Timer->GetTime());
 	if(!result)
 	{
 		return false;
 	}
-	SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
 	
 	return true;
 }
@@ -186,11 +248,6 @@ LRESULT CALLBACK SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam
 			m_Input->KeyUp((unsigned int)wparam);
 			return 0;
 		}
-		case WM_MOUSEMOVE:
-		{
-			 m_Input->MouseMove( wparam, lparam); // wp & lp store the co-ordinates here
-			 return 0;
-		}   
 		 case WM_LBUTTONDOWN:
 		{
 			m_Input->LButtonDown( (unsigned int)wparam, (unsigned int)lparam);
@@ -202,6 +259,18 @@ LRESULT CALLBACK SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam
 			return 0;
 		}
 
+		case WM_MOUSEMOVE:
+		{
+			mousePoints = MAKEPOINTS(lparam); 
+		//	cout << "mouse move: " << mousePoints.x << endl;
+			
+			centreMousePos[0] = screenWidth/2;
+			centreMousePos[1] = screenHeight/2;
+			m_Input->MouseMove( mousePoints.x- centreMousePos[0], mousePoints.y- centreMousePos[1]); // wp & lp store the co-ordinates here
+			SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+	
+		return 0;
+		}   		
 
 		// Any other messages send to the default message handler as our application won't make use of them.
 		default:
@@ -276,6 +345,9 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 		// Place the window in the middle of the screen.
 		posX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth)  / 2;
 		posY = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
+
+		SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+
 	}
 
 	// Create the window with the screen settings and get the handle to it.
@@ -287,9 +359,8 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	ShowWindow(m_hwnd, SW_SHOW);
 	SetForegroundWindow(m_hwnd);
 	SetFocus(m_hwnd);
-
 	// Hide the mouse cursor.
-	ShowCursor(false);
+	ShowCursor(true);
 
 	return;
 }

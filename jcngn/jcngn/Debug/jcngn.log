@@ -1,20 +1,19 @@
-﻿  OBJImporter.cpp
+﻿  scenenodelist.cpp
 c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(71): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
-c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.cpp(21): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-          c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
-c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.cpp(22): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-          c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(197) : see declaration of 'strtok'
-c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.cpp(27): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-          c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(197) : see declaration of 'strtok'
-c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.cpp(41): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-          c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
-c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.cpp(17): warning C4101: 'garbage' : unreferenced local variable
+  graphicsclass.cpp
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(71): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(70): warning C4482: nonstandard extension used: enum 'SCENENODE_TYPE' used in qualified name
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(271): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(392): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(393): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
   Generating Code...
   Compiling...
   systemclass.cpp
 c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(71): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
-  scenenode.cpp
-c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(71): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\systemclass.cpp(267): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\systemclass.cpp(268): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\systemclass.cpp(269): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\systemclass.cpp(269): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
   main.cpp
 c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(71): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
 c:\users\james\documents\github\jc_ngn\jcngn\jcngn\main.cpp(13): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
@@ -23,25 +22,5 @@ c:\users\james\documents\github\jc_ngn\jcngn\jcngn\main.cpp(14): warning C4996: 
           c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(249) : see declaration of 'freopen'
 c:\users\james\documents\github\jc_ngn\jcngn\jcngn\main.cpp(15): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(249) : see declaration of 'freopen'
-  graphicsclass.cpp
-c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(71): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
-c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(61): warning C4482: nonstandard extension used: enum 'SCENENODE_TYPE' used in qualified name
-c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(190): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(191): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(263): warning C4305: 'argument' : truncation from 'double' to 'float'
-  Generating Code...
-  Compiling...
-  textureclass.cpp
-  modelclass.cpp
-  lightshaderclass.cpp
-  lightclass.cpp
-  inputclass.cpp
-  d3dclass.cpp
-  colorshaderclass.cpp
-  cameraclass.cpp
-  bitmapclass.cpp
-  Generating Code...
-  Compiling...
-  textureshaderclass.cpp
   Generating Code...
   jcngn.vcxproj -> C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.exe

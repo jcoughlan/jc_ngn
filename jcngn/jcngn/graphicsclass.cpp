@@ -13,6 +13,11 @@ GraphicsClass::GraphicsClass()
 	planeNode = 0;
 	m_LightShader = 0;
 	m_Light = 0;
+	m_Bitmap = 0;
+	 m_TextureShader = 0;
+	 m_Text = 0;
+	 m_sceneNodeList = 0;
+	m_Frustum = 0;
 }
 
 
@@ -29,7 +34,7 @@ GraphicsClass::~GraphicsClass()
 bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 {
 	bool result;
-
+	D3DXMATRIX baseViewMatrix;
 
 	// Create the Direct3D object.
 	m_D3D = new D3DClass;
@@ -46,20 +51,28 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
+	m_sceneNodeList = new SceneNodeList();
+
 	// Create the camera object.
 	m_Camera = new CameraClass;
 	if(!m_Camera)
 	{
 		return false;
 	}
+	m_Camera->SetPosition(0.0f, 0.0f, -1.0f);
+	m_Camera->Render();
+	m_Camera->GetViewMatrix(baseViewMatrix);
 
 	// Set the initial position of the camera.
 	m_Camera->SetPosition(0.0f, 3.0f, -10.0f);
-	m_Camera->SetRotation(20.0f, 0.0f,0.0f);
 	cubeNode = new SceneNode("../Engine/data/cube.obj", m_D3D->GetDevice() );
 	sphereNode = new SceneNode("../Engine/data/sphere.obj", m_D3D->GetDevice() );
 	planeNode = new SceneNode( SCENENODE_TYPE::PLANE_MESH, m_D3D->GetDevice());
 	
+	m_sceneNodeList->AddSceneNode(cubeNode);
+	m_sceneNodeList->AddSceneNode(sphereNode);
+	m_sceneNodeList->AddSceneNode(planeNode);
+
 	// Create the light shader object.
 	m_LightShader = new LightShaderClass;
 	if(!m_LightShader)
@@ -93,12 +106,91 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	lastMousePos[0] = 0.0;
 	lastMousePos[1] = 0.0;
 
+	//orthographic bitmap code
+	/*// Create the texture shader object.
+	m_TextureShader = new TextureShaderClass;
+	if(!m_TextureShader)
+	{
+		return false;
+	}
+
+	// Initialize the texture shader object.
+	result = m_TextureShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+
+	// Create the bitmap object.
+	m_Bitmap = new BitmapClass;
+	if(!m_Bitmap)
+	{
+		return false;
+	}
+
+	// Initialize the bitmap object.
+	result = m_Bitmap->Initialize(m_D3D->GetDevice(), screenWidth, screenHeight, L"../Engine/data/seafloor.dds", 256, 256);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the bitmap object.", L"Error", MB_OK);
+		return false;
+	}
+	*/
+	// Create the text object.
+	m_Text = new TextClass;
+	if(!m_Text)
+	{
+		return false;
+	}
+
+	// Initialize the text object.
+	result = m_Text->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), hwnd, screenWidth, screenHeight, baseViewMatrix);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the text object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create the frustum object.
+	m_Frustum = new FrustumClass;
+	if(!m_Frustum)
+	{
+		return false;
+	}
+
+	return true;
+
+
 	return true;
 }
 
 
 void GraphicsClass::Shutdown()
 {
+
+	if(m_Frustum)
+	{
+		delete m_Frustum;
+		m_Frustum = 0;
+	}
+
+	if(m_sceneNodeList)
+	{
+		m_sceneNodeList->Shutdown();
+		delete m_sceneNodeList;
+		m_sceneNodeList = 0;
+	}
+
+	// Release the bitmap object.
+	if(m_Bitmap)
+	{
+		m_Bitmap->Shutdown();
+		delete m_Bitmap;
+		m_Bitmap = 0;
+	}
+
 	// Release the light object.
 	if(m_Light)
 	{
@@ -136,6 +228,14 @@ void GraphicsClass::Shutdown()
 		m_Camera = 0;
 	}
 
+	// Release the text object.
+	if(m_Text)
+	{
+		m_Text->Shutdown();
+		delete m_Text;
+		m_Text = 0;
+	}
+
 	// Release the D3D object.
 	if(m_D3D)
 	{
@@ -147,49 +247,128 @@ void GraphicsClass::Shutdown()
 	return;
 }
 
-
-bool GraphicsClass::Frame()
+bool GraphicsClass::DrawPerspective()
 {
-	bool result;
-	static float rotation = 0.0f;
+	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix;
+	bool  result = false;
 
 
-	// Update the rotation variable each frame.
-	rotation += (float)D3DX_PI * 0.005f;
-	if(rotation > 360.0f)
-	{
-		rotation -= 360.0f;
-	}
+	// Generate the view matrix based on the camera's position.
+	m_Camera->Render();
+
+	// Get the world, view, and projection matrices from the camera and d3d objects.
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_D3D->GetWorldMatrix(worldMatrix);
+	m_D3D->GetProjectionMatrix(projectionMatrix);		
+
+	m_Frustum->ConstructFrustum(SCREEN_DEPTH, projectionMatrix, viewMatrix);
+	m_sceneNodeList->SetFrustum(m_Frustum);
+	// Draw our meshes	
+		
+	sphereNode->setTranslation(0,1,2);
+	cubeNode->setTranslation(0,-1,0);
+
+	planeNode->setRotationX(90 * DEG_2_RAD);
+	planeNode->setScale(2.0,2.0,2.0);
+	planeNode->setTranslation(0,-2,0);
+
+	m_sceneNodeList->Sort();
+
+	m_sceneNodeList->DrawAll(m_D3D->GetDeviceContext(),worldMatrix, viewMatrix, projectionMatrix, m_LightShader, m_Light, m_Camera);
 	
-	// Render the graphics scene.
-	result = Render(rotation);
+	return true;
+
+}
+
+bool GraphicsClass::DrawOrthographic(int fps, int cpu)
+{
+	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix;
+	bool result;
+	m_Camera->GetViewMatrix(viewMatrix);
+	m_D3D->GetWorldMatrix(worldMatrix);
+	m_D3D->GetProjectionMatrix(projectionMatrix);
+	m_D3D->GetOrthoMatrix(orthoMatrix);
+	m_D3D->TurnZBufferOff();
+	// Turn on the alpha blending before rendering the text.
+	m_D3D->TurnOnAlphaBlending();
+	result = m_Text->SetFps(fps, m_D3D->GetDeviceContext());
 	if(!result)
 	{
 		return false;
 	}
 
+	// Set the cpu usage.
+	result = m_Text->SetCpu(cpu, m_D3D->GetDeviceContext());
+	if(!result)
+	{
+		return false;
+	}
+
+	// Render the text strings.
+	result = m_Text->Render(m_D3D->GetDeviceContext(), worldMatrix, orthoMatrix);
+	if(!result)
+	{
+		return false;
+	}
+	// Put the bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
+	/*result = m_Bitmap->Render(m_D3D->GetDeviceContext(), 100, 100);
+	if(!result)
+	{
+		return false;
+	}
+
+	// Render the bitmap with the texture shader.
+	result = m_TextureShader->Render(m_D3D->GetDeviceContext(), m_Bitmap->GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix, m_Bitmap->GetTexture());
+	if(!result)
+	{
+		return false;
+	}*/
+	
+	// Turn off alpha blending after rendering the text.
+	m_D3D->TurnOffAlphaBlending();
+	// Turn the Z buffer back on now that all 2D rendering has completed.
+	m_D3D->TurnZBufferOn();
+	return true;
+}
+
+
+bool GraphicsClass::Frame(int fps, int cpu, float frameTime)
+{
+	bool result;
+	static float rotation = 0.0f;
+	
+	// Clear the buffers to begin the scene.
+	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+	
+	
+	// Render the perspective scene scene.
+	result = DrawPerspective();
+	if(!result)
+	{
+		return false;
+	}
+
+
+	result = DrawOrthographic(fps, cpu);
+	if(!result)
+	{
+		return false;
+	}
+
+
+	// Present the rendered scene to the screen.
+	m_D3D->EndScene();
 	return true;
 }
 
 bool GraphicsClass::HandleMouseInput(int mouseX, int mouseY)
-{
-	if (lastMousePos[0] != 0.0 && lastMousePos[1] != 0.0)
-	{
-		cout << "mouseInput " << lastMousePos[0] << endl;
-		float speed = MOUSE_CAMERA_SPEED;
-		float camX,camY, camZ = 0.0f;
-		camX = m_Camera->GetRotation().x;
-		camY = m_Camera->GetRotation().y;
-		camZ = m_Camera->GetRotation().z;
-		float rotX = (mouseX - lastMousePos[0]) * speed;
-		float rotY = (mouseY - lastMousePos[1]) * speed;
-		m_Camera->SetRotation(camX+rotY, camY+rotX, camZ);	
-
-	}
-
-	lastMousePos[0] = mouseX;
-	lastMousePos[1] = mouseY;
-		
+{	
+	float speed = MOUSE_CAMERA_SPEED;
+	float yaw, pitch;
+	yaw = m_Camera->GetYaw();
+	pitch = m_Camera->GetPitch();
+	m_Camera->SetPitch(pitch +(mouseY* speed));
+	m_Camera->SetYaw(yaw + (mouseX* speed));
 	return true;
 }
 
@@ -200,35 +379,47 @@ bool GraphicsClass::HandleKeyboardInput(unsigned int keyIndex){
 
 	//cout << "HandleInput (DOWN): " << keyIndex << endl
 
+
 	float camX,camY,camZ = 0.0f;
 	camX = m_Camera->GetPosition().x;
 	camY = m_Camera->GetPosition().y;
 	camZ = m_Camera->GetPosition().z;
+	float offset =KEYBOARD_CAMERA_SPEED;
 
-	float speed = KEYBOARD_CAMERA_SPEED;
+	float pitch = m_Camera->GetPitch();
+	float yaw   =m_Camera->GetYaw();
+
+	float pitchRadian = pitch * (PI / 180); // X rotation
+	float yawRadian   = yaw   * (PI / 180); // Y rotation
+
+	float newPosX = offset *  sinf( yawRadian ) * cosf( pitchRadian );
+	float newPosY = offset * -sinf( pitchRadian );
+	float newPosZ = offset *  cosf( yawRadian ) * cosf( pitchRadian );	
+
+
 	switch (keyIndex)
 	{		
 		//movecameraforward
 		//"W"
-		case(87):  m_Camera->SetPosition(camX, camY,camZ+speed);break;
+	case(87):  m_Camera->SetPosition(camX + newPosX, camY + newPosY,camZ+newPosZ);break;
 			
 		//movecameraBack
 		//"S"
-		case(83): m_Camera->SetPosition(camX, camY,camZ-speed);break;
+		case(83): m_Camera->SetPosition(camX-newPosX, camY-newPosY,camZ-newPosZ);break;
 
 		//movecameraLeft
 		//"A"
-		case(65):m_Camera->SetPosition(camX-speed, camY,camZ);break;
+		//case(65):m_Camera->SetPosition(camX +newPosX, camY - newPosY,camZ - newPosZ);break;
 
 		//movecameraRight
 		//"D"
-		case(68): m_Camera->SetPosition(camX+speed, camY,camZ);break;
+		//case(68): m_Camera->SetPosition(camX- newPosX, camY,camZ);break;
 
 		//movecameraup
-		case(VK_SPACE): m_Camera->SetPosition(camX, camY+speed,camZ);break;
+		case(VK_SPACE): m_Camera->SetPosition(camX, camY+offset,camZ);break;
 
 		//movecameradown
-		case(VK_CONTROL): m_Camera->SetPosition(camX, camY-speed,camZ);break;
+		case(VK_CONTROL): m_Camera->SetPosition(camX, camY-offset, camZ);break;
 
 		default:cout << "HandleInput (Not handled): " << keyIndex << endl; break;
 	}
@@ -237,40 +428,3 @@ bool GraphicsClass::HandleKeyboardInput(unsigned int keyIndex){
 }
 
 
-bool GraphicsClass::Render(float rotation)
-{
-	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix;
-	bool result;
-
-	// Clear the buffers to begin the scene.
-	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
-
-	// Generate the view matrix based on the camera's position.
-	m_Camera->Render();
-
-	// Get the world, view, and projection matrices from the camera and d3d objects.
-	m_Camera->GetViewMatrix(viewMatrix);
-	m_D3D->GetWorldMatrix(worldMatrix);
-	m_D3D->GetProjectionMatrix(projectionMatrix);		
-
-	// Draw our meshes	
-	cubeNode->setTranslation(0,-1,0);
-	cubeNode->setRotationY(rotation);
-	sphereNode->setTranslation(0,1,2);
-	sphereNode->setRotationX(-rotation);
-	result =sphereNode->Draw(m_D3D->GetDeviceContext(),worldMatrix, viewMatrix, projectionMatrix, m_LightShader, m_Light, m_Camera);
-	result = cubeNode->Draw(m_D3D->GetDeviceContext(),worldMatrix, viewMatrix, projectionMatrix, m_LightShader, m_Light, m_Camera);
-	planeNode->setRotationX(90 * DEG_2_RAD);
-	planeNode->setScale(2.0,2.0,2.0);
-	planeNode->setTranslation(0,-2,0);
-	result = planeNode->Draw(m_D3D->GetDeviceContext(),worldMatrix, viewMatrix, projectionMatrix, m_LightShader, m_Light, m_Camera);
-	if(!result)
-	{
-		return false;
-	}
-
-	// Present the rendered scene to the screen.
-	m_D3D->EndScene();
-
-	return true;
-}

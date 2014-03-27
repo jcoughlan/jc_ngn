@@ -29,7 +29,7 @@
 // INCLUDES //
 //////////////
 #include <d3dx10math.h>
-
+#include <algorithm> 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: CameraClass
@@ -42,17 +42,20 @@ public:
 	~CameraClass();
 
 	void SetPosition(float, float, float);
-	void SetRotation(float, float, float);
 
 	D3DXVECTOR3 GetPosition();
-	D3DXVECTOR3 GetRotation();
 
+
+	float GetYaw () const { return cam_yaw ; }
+	void SetYaw ( float y ) ;
+
+	float GetPitch () const { return cam_pitch ;}
+	void SetPitch ( float p ) ;
 	void Render();
 	void GetViewMatrix(D3DXMATRIX&);
 
 private:
-	float m_positionX, m_positionY, m_positionZ;
-	float m_rotationX, m_rotationY, m_rotationZ;
+	float m_positionX, m_positionY, m_positionZ, cam_pitch, cam_yaw;
 	D3DXMATRIX m_viewMatrix;
 };
 

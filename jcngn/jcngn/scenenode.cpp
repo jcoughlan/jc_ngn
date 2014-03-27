@@ -31,6 +31,8 @@ SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D)
 	D3DXMatrixRotationY(&rotationMatrixY, 0.f);
 	D3DXMatrixRotationZ(&rotationMatrixZ, 0.f);
 	D3DXMatrixScaling(&scalingMatrix, 1.0f, 1.0f, 1.0f);
+
+		renderSceneNode = true;
 }
 
 SceneNode::SceneNode(SCENENODE_TYPE type, ID3D11Device* m_D3D)
@@ -99,6 +101,17 @@ void SceneNode::setScale(float x, float y, float z)
 	D3DXMatrixScaling(&scalingMatrix,x,y,z);
 }
 
+void SceneNode::getTranslation(float &x, float &y, float&z) 
+{
+	x = translationMatrix._41;
+	y = translationMatrix._42;
+	z = translationMatrix._43;
+}
+void SceneNode::getScale(float &x, float &y, float&z) {
+	x = scalingMatrix._11;
+	y = scalingMatrix._22;
+	z = scalingMatrix._33;
+}
 
 bool SceneNode::Draw(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, LightShaderClass* lightShader, LightClass* light, CameraClass* camera)
 {

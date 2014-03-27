@@ -48,25 +48,29 @@ enum SCENENODE_TYPE
 class SceneNode
 {
 public: 
-	SceneNode(string obj_path, ID3D11Device* m_D3D);
-	SceneNode(SCENENODE_TYPE, ID3D11Device* m_D3D);
-	~SceneNode();
+		SceneNode(string obj_path, ID3D11Device* m_D3D);
+		SceneNode(SCENENODE_TYPE, ID3D11Device* m_D3D);
+		~SceneNode();
 
-	ModelClass* GetModel(){ return model;}
+		ModelClass* GetModel(){ return model;}
 
-	bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, LightShaderClass*, LightClass*, CameraClass*);
-	void setTranslation(float x, float y, float z);
-	void setRotationX(float angle);
-	void setRotationY(float angle);
-	void setRotationZ(float angle);
-	void setScale(float x, float y, float z);
-
+		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, LightShaderClass*, LightClass*, CameraClass*);
+		void setTranslation(float x, float y, float z);
+		void setRotationX(float angle);
+		void setRotationY(float angle);
+		void setRotationZ(float angle);
+		void setRenderSceneNode(bool render){renderSceneNode = render;}
+		void setScale(float x, float y, float z);
+		void getTranslation(float &x, float &y, float&z); 		
+		void getScale(float &x, float &y, float&z);
+		bool getRenderSceneNode() { return renderSceneNode;}
+	
 private:
 	string objTxtPath;
 	ModelClass* model;
 	OBJImporter* objImporter;
 	SCENENODE_TYPE scenenode_type;
-
+	bool renderSceneNode;
 	D3DXMATRIX translationMatrix;
 	D3DXMATRIX rotationMatrixX;
 	D3DXMATRIX rotationMatrixY;

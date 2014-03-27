@@ -35,13 +35,16 @@
 // INCLUDES //
 //////////////
 #include <windows.h>
-
-
 ///////////////////////
 // MY CLASS INCLUDES //
 ///////////////////////
 #include "inputclass.h"
 #include "graphicsclass.h"
+
+#include "fpsclass.h"
+#include "cpuclass.h"
+#include "timerclass.h"
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -72,6 +75,12 @@ private:
 	int screenHeight, screenWidth;
 	InputClass* m_Input;
 	GraphicsClass* m_Graphics;
+	float centreMousePos[2];
+
+	FpsClass* m_Fps;
+	CpuClass* m_Cpu;
+	TimerClass* m_Timer;
+
 };
 
 

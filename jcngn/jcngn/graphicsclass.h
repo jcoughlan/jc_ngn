@@ -28,20 +28,26 @@
 ///////////////////////
 // MY CLASS INCLUDES //
 ///////////////////////
+#include "bitmapclass.h"
+#include "scenenodelist.h"
 #include "d3dclass.h"
+#include "textureshaderclass.h"
 #include "cameraclass.h"
 #include "lightshaderclass.h"
 #include "lightclass.h"
 #include "OBJImporter.h"
 #include "scenenode.h"
 #include "inputclass.h"
+#include "textclass.h"
 #include "colorshaderclass.h"
+#include "frustumclass.h"
 #include <Windows.h>
 #include <iostream>
 #include <string>
 using namespace std;
 
 #define DEG_2_RAD 0.0174532925 
+#define PI 3.14159265359
 /////////////
 // GLOBALS //
 /////////////
@@ -63,11 +69,11 @@ public:
 
 	bool Initialize(int, int, HWND);
 	void Shutdown();
-	bool Frame();
+	bool DrawOrthographic(int fps, int cpu);
+	bool DrawPerspective();
+	bool Frame(int fps, int cpu, float frameTime);
 	bool HandleKeyboardInput(unsigned int keyIndex);
 	bool HandleMouseInput(int mouseX, int mouseY);
-private:
-	bool Render(float);
 
 private:
 	float lastMousePos[2];
@@ -78,6 +84,11 @@ private:
 	SceneNode* sphereNode;
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;
+	BitmapClass* m_Bitmap;
+	TextureShaderClass* m_TextureShader;
+	TextClass* m_Text;	
+	FrustumClass* m_Frustum;
+	SceneNodeList* m_sceneNodeList;
 };
 
 #endif

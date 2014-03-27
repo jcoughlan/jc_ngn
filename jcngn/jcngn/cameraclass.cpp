@@ -9,10 +9,8 @@ CameraClass::CameraClass()
 	m_positionX = 0.0f;
 	m_positionY = 0.0f;
 	m_positionZ = 0.0f;
-
-	m_rotationX = 0.0f;
-	m_rotationY = 0.0f;
-	m_rotationZ = 0.0f;
+	cam_pitch = 0.0f;
+	cam_yaw = 0.0f;
 }
 
 
@@ -35,13 +33,24 @@ void CameraClass::SetPosition(float x, float y, float z)
 }
 
 
-void CameraClass::SetRotation(float x, float y, float z)
+void CameraClass::SetPitch(float pitch)
 {
-	m_rotationX = x;
-	m_rotationY = y;
-	m_rotationZ = z;
-	return;
+	cam_pitch= pitch;
+	cam_pitch = min ( cam_pitch , 90.0f );
+	cam_pitch = max ( cam_pitch , -90.0f );
 }
+
+void CameraClass::SetYaw(float yaw)
+{
+	cam_yaw = yaw;
+	if( cam_yaw < 0) {
+ cam_yaw += 360.0f ;
+ }
+ if( cam_yaw > 360.0f ) {
+	cam_yaw -= 360.0f ;
+ }
+}
+
 
 
 D3DXVECTOR3 CameraClass::GetPosition()
@@ -49,11 +58,6 @@ D3DXVECTOR3 CameraClass::GetPosition()
 	return D3DXVECTOR3(m_positionX, m_positionY, m_positionZ);
 }
 
-
-D3DXVECTOR3 CameraClass::GetRotation()
-{
-	return D3DXVECTOR3(m_rotationX, m_rotationY, m_rotationZ);
-}
 
 
 void CameraClass::Render()
@@ -79,9 +83,9 @@ void CameraClass::Render()
 	lookAt.z = 1.0f;
 
 	// Set the yaw (Y axis), pitch (X axis), and roll (Z axis) rotations in radians.
-	pitch = m_rotationX * 0.0174532925f;
-	yaw   = m_rotationY * 0.0174532925f;
-	roll  = m_rotationZ * 0.0174532925f;
+	pitch = cam_pitch * 0.0174532925f;
+	yaw   = cam_yaw * 0.0174532925f;
+	roll  = 0 * 0.0174532925f;
 
 	// Create the rotation matrix from the yaw, pitch, and roll values.
 	D3DXMatrixRotationYawPitchRoll(&rotationMatrix, yaw, pitch, roll);
