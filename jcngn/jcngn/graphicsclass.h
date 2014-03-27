@@ -25,9 +25,11 @@ using namespace std;
 /////////////
 // GLOBALS //
 /////////////
-const bool FULL_SCREEN = false;
+const bool FULL_SCREEN = true;
 const bool VSYNC_ENABLED = true;
 const float SCREEN_DEPTH = 1000.0f;
+const float KEYBOARD_CAMERA_SPEED = 0.1f;
+const float MOUSE_CAMERA_SPEED = 0.1f;
 const float SCREEN_NEAR = 0.1f;
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: GraphicsClass
@@ -42,12 +44,13 @@ public:
 	bool Initialize(int, int, HWND);
 	void Shutdown();
 	bool Frame();
-	bool HandleInput(unsigned int keyIndex);
-
+	bool HandleKeyboardInput(unsigned int keyIndex);
+	bool HandleMouseInput(int mouseX, int mouseY);
 private:
 	bool Render(float);
 
 private:
+	float lastMousePos[2];
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
 	SceneNode* cubeNode;

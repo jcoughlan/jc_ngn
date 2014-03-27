@@ -1,13 +1,32 @@
-﻿Build started 24/03/2014 00:51:27.
+﻿Build started 27/03/2014 00:04:43.
      1>Project "C:\Users\James\Documents\GitHub\jc_ngn\jcngn\jcngn\jcngn.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\jcngn.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt graphicsclass.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt graphicsclass.cpp main.cpp systemclass.cpp
          graphicsclass.cpp
      1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(51): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
      1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(61): warning C4482: nonstandard extension used: enum 'SCENENODE_TYPE' used in qualified name
-     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(238): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(188): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(189): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(261): warning C4305: 'argument' : truncation from 'double' to 'float'
+         Generating Code...
+         Compiling...
+         systemclass.cpp
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(51): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\systemclass.cpp(206): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\systemclass.cpp(207): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\systemclass.cpp(208): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\systemclass.cpp(208): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+         main.cpp
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(51): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\main.cpp(13): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(249) : see declaration of 'freopen'
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\main.cpp(14): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(249) : see declaration of 'freopen'
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\main.cpp(15): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(249) : see declaration of 'freopen'
+         Generating Code...
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
@@ -40,4 +59,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.23
+Time Elapsed 00:00:02.77

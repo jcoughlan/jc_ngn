@@ -2,12 +2,14 @@
 // Filename: systemclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
 #include "systemclass.h"
-
+static	POINTS mousePoints;
 
 SystemClass::SystemClass()
 {
 	m_Input = 0;
 	m_Graphics = 0;
+	centreMousePos[0] = 0;
+	centreMousePos[1] = 0;
 }
 
 
@@ -23,7 +25,6 @@ SystemClass::~SystemClass()
 
 bool SystemClass::Initialize()
 {
-	int screenWidth, screenHeight;
 	bool result;
 
 
@@ -43,7 +44,7 @@ bool SystemClass::Initialize()
 
 	// Initialize the input object.
 	m_Input->Initialize();
-
+	
 	// Create the graphics object.  This object will handle rendering all the graphics for this application.
 	m_Graphics = new GraphicsClass;
 	if(!m_Graphics)
@@ -94,6 +95,9 @@ void SystemClass::Run()
 
 	// Initialize the message structure.
 	ZeroMemory(&msg, sizeof(MSG));
+
+
+
 	
 	// Loop until there is a quit message from the window or the user.
 	done = false;
@@ -121,6 +125,12 @@ void SystemClass::Run()
 			}
 		}
 
+		if(m_Input->IsKeyDown(VK_ESCAPE))
+		{
+			done = true;
+		}
+
+
 	}
 
 	return;
@@ -129,18 +139,23 @@ void SystemClass::Run()
 
 bool SystemClass::Frame()
 {
+	
 	bool result;
 
+	int mouseX, mouseY;
+	m_Input->GetMouseCoords(mouseX, mouseY);
+	
 
-	// Check if the user pressed escape and wants to exit the application.
-	if(m_Input->IsKeyDown(VK_ESCAPE))
+	// Do the frame processing for the graphics object.
+	result = m_Graphics->HandleMouseInput(mouseX, mouseY);
+	if(!result)
 	{
 		return false;
 	}
-	
-	for (int i = 0; i < 256; i++)
-		if(m_Input->IsKeyDown(i))	
-			 m_Graphics->HandleInput(i);	
+
+	for (int i = 0; i < 256;i++)
+		if (m_Input->IsKeyDown(i))
+			result = m_Graphics->HandleKeyboardInput(i);
 	
 
 	// Do the frame processing for the graphics object.
@@ -149,10 +164,9 @@ bool SystemClass::Frame()
 	{
 		return false;
 	}
-
+	
 	return true;
 }
-
 
 LRESULT CALLBACK SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 {
@@ -173,6 +187,29 @@ LRESULT CALLBACK SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam
 			m_Input->KeyUp((unsigned int)wparam);
 			return 0;
 		}
+		 case WM_LBUTTONDOWN:
+		{
+			m_Input->LButtonDown( (unsigned int)wparam, (unsigned int)lparam);
+			return 0;
+		}
+		case WM_LBUTTONUP:
+		{
+			 m_Input->LButtonUp((unsigned int) wparam, (unsigned int)lparam);
+			return 0;
+		}
+
+		case WM_MOUSEMOVE:
+		{
+			mousePoints = MAKEPOINTS(lparam); 
+		//	cout << "mouse move: " << mousePoints.x << endl;
+			
+			centreMousePos[0] = screenWidth/2;
+			centreMousePos[1] = screenHeight/2;
+			m_Input->MouseMove( mousePoints.x- centreMousePos[0], mousePoints.y- centreMousePos[1]); // wp & lp store the co-ordinates here
+			SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+	
+		return 0;
+		}   		
 
 		// Any other messages send to the default message handler as our application won't make use of them.
 		default:
@@ -181,6 +218,7 @@ LRESULT CALLBACK SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam
 		}
 	}
 }
+
 
 
 void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
@@ -246,6 +284,9 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 		// Place the window in the middle of the screen.
 		posX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth)  / 2;
 		posY = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
+
+		SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+
 	}
 
 	// Create the window with the screen settings and get the handle to it.
@@ -257,9 +298,10 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	ShowWindow(m_hwnd, SW_SHOW);
 	SetForegroundWindow(m_hwnd);
 	SetFocus(m_hwnd);
-
+	ReleaseCapture(); 
+	SetCapture(m_hwnd);
 	// Hide the mouse cursor.
-	ShowCursor(false);
+	ShowCursor(true);
 
 	return;
 }

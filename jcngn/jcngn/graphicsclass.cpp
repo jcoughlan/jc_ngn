@@ -90,6 +90,9 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	//lower = stronger
 	m_Light->SetSpecularPower(20.f);
 
+	lastMousePos[0] = 0.0;
+	lastMousePos[1] = 0.0;
+
 	return true;
 }
 
@@ -168,7 +171,27 @@ bool GraphicsClass::Frame()
 	return true;
 }
 
-bool GraphicsClass::HandleInput(unsigned int keyIndex){
+bool GraphicsClass::HandleMouseInput(int mouseX, int mouseY)
+{
+	
+		cout << "mouseInput " << lastMousePos[0] << endl;
+		float speed = MOUSE_CAMERA_SPEED;
+		float camX,camY, camZ = 0.0f;
+		camX = m_Camera->GetRotation().x;
+		camY = m_Camera->GetRotation().y;
+		camZ = m_Camera->GetRotation().z;
+		float rotX = (mouseX ) * speed;
+		float rotY = (mouseY) * speed;
+		m_Camera->SetRotation(camX+rotY, camY+rotX, camZ);	
+
+
+	lastMousePos[0] = mouseX;
+	lastMousePos[1] = mouseY;
+		
+	return true;
+}
+
+bool GraphicsClass::HandleKeyboardInput(unsigned int keyIndex){
 
 	///To handle all key presses required
 	//Codes can be found at http://www.asciitable.com/
@@ -180,7 +203,7 @@ bool GraphicsClass::HandleInput(unsigned int keyIndex){
 	camY = m_Camera->GetPosition().y;
 	camZ = m_Camera->GetPosition().z;
 
-	float speed = 0.1f;
+	float speed = KEYBOARD_CAMERA_SPEED;
 	switch (keyIndex)
 	{		
 		//movecameraforward

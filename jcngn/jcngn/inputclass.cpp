@@ -11,6 +11,7 @@ InputClass::InputClass()
 
 InputClass::InputClass(const InputClass& other)
 {
+		
 }
 
 
@@ -22,7 +23,8 @@ InputClass::~InputClass()
 void InputClass::Initialize()
 {
 	int i;
-	
+	mouseX = 0;
+	mouseY = 0;
 
 	// Initialize all the keys to being released and not pressed.
 	for(i=0; i<256; i++)
@@ -33,7 +35,18 @@ void InputClass::Initialize()
 	return;
 }
 
+void InputClass::LButtonDown(unsigned int l, unsigned int r)
+{
+}
+void InputClass::LButtonUp(unsigned int l, unsigned int r)
+{
+}
 
+void InputClass::MouseMove(int x , int y)
+{
+	mouseX = (int)x;
+	mouseY = (int)y;
+}
 void InputClass::KeyDown(unsigned int input)
 {
 	// If a key is pressed then save that state in the key array.
