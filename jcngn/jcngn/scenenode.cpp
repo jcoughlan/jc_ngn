@@ -4,9 +4,10 @@
 #include "scenenode.h"
 
 
-SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* textureLoc)
+SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* textureLoc, SHADER_TYPE sh_type)
 {
 	scenenode_type = OBJ_MESH;
+	shader_type = sh_type;
 	model = 0;	
 	objImporter = 0;
 	objImporter = new OBJImporter();
@@ -35,8 +36,9 @@ SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* textureLoc)
 		renderSceneNode = true;
 }
 
-SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* textureLoc1, WCHAR* textureLoc2)
+SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* textureLoc1, WCHAR* textureLoc2, SHADER_TYPE sh_type)
 {
+	shader_type = sh_type;
 	scenenode_type = OBJ_MESH;
 	model = 0;	
 	objImporter = 0;
@@ -66,9 +68,10 @@ SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* textureLoc1, W
 		renderSceneNode = true;
 }
 
-SceneNode::SceneNode(SCENENODE_TYPE type, ID3D11Device* m_D3D)
+SceneNode::SceneNode(SCENENODE_TYPE type, ID3D11Device* m_D3D,SHADER_TYPE sh_type)
 {
 	scenenode_type = type;
+	shader_type = sh_type;
 	model = 0;	
 	objImporter = 0;
 
@@ -166,5 +169,41 @@ bool SceneNode::Draw(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix,
 	// Render the model using the light shader.
 	bool result = multiTextureShader->Render(deviceContext, model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
 		model->GetTextureArray());
+	return result;
+}
+
+bool SceneNode::Draw(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, LightMapShaderClass* lightMapShaderClass, LightClass* light, CameraClass* camera)
+{
+	model->Render(deviceContext);
+
+	D3DXMATRIX modelMatrix = ( rotationMatrixX * rotationMatrixY * rotationMatrixZ *translationMatrix* scalingMatrix);
+	worldMatrix = modelMatrix*worldMatrix;
+	// Render the model using the light shader.
+	bool result = lightMapShaderClass->Render(deviceContext, model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
+		model->GetTextureArray());
+	return result;
+}
+
+bool SceneNode::Draw(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, TextureShaderClass* textureShader, LightClass* light, CameraClass* camera)
+{
+	model->Render(deviceContext);
+
+	D3DXMATRIX modelMatrix = ( rotationMatrixX * rotationMatrixY * rotationMatrixZ *translationMatrix* scalingMatrix);
+	worldMatrix = modelMatrix*worldMatrix;
+	// Render the model using the light shader.
+	bool result = textureShader->Render(deviceContext, model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
+		model->GetTexture());
+	return result;
+}
+
+
+bool SceneNode::Draw(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, ColorShaderClass* colorShader, LightClass* light, CameraClass* camera)
+{
+	model->Render(deviceContext);
+
+	D3DXMATRIX modelMatrix = ( rotationMatrixX * rotationMatrixY * rotationMatrixZ *translationMatrix* scalingMatrix);
+	worldMatrix = modelMatrix*worldMatrix;
+	// Render the model using the light shader.
+	bool result = colorShader->Render(deviceContext, model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
 	return result;
 }

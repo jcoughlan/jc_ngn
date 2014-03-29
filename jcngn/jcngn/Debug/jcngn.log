@@ -1,51 +1,12 @@
-﻿Build started 29/03/2014 16:10:32.
-     1>Project "C:\Users\James\Documents\GitHub\jc_ngn\jcngn\jcngn\jcngn.vcxproj" on node 2 (build target(s)).
-     1>InitializeBuildStatus:
-         Creating "Debug\jcngn.unsuccessfulbuild" because "AlwaysCreate" was specified.
-       ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt graphicsclass.cpp
-         graphicsclass.cpp
-     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(71): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
-       ManifestResourceCompile:
-         All outputs are up-to-date.
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\jcngn.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.lib" /MACHINE:X86 Debug\jcngn.exe.embed.manifest.res
-         Debug\bitmapclass.obj
-         Debug\cameraclass.obj
-         Debug\colorshaderclass.obj
-         Debug\cpuclass.obj
-         Debug\d3dclass.obj
-         Debug\fontclass.obj
-         Debug\fontshaderclass.obj
-         Debug\fpsclass.obj
-         Debug\frustumclass.obj
-         Debug\graphicsclass.obj
-         Debug\inputclass.obj
-         Debug\lightclass.obj
-         Debug\lightshaderclass.obj
-         Debug\main.obj
-         Debug\modelclass.obj
-         Debug\multitextureshaderclass.obj
-         Debug\OBJImporter.obj
-         Debug\scenenode.obj
-         Debug\scenenodelist.obj
-         Debug\systemclass.obj
-         Debug\textclass.obj
-         Debug\texturearrayclass.obj
-         Debug\textureclass.obj
-         Debug\textureshaderclass.obj
-         Debug\timerclass.obj
-       Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\jcngn.exe.embed.manifest" /manifest Debug\jcngn.exe.intermediate.manifest
-         All outputs are up-to-date.
-       LinkEmbedManifest:
-         All outputs are up-to-date.
-         jcngn.vcxproj -> C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.exe
-       FinalizeBuildStatus:
-         Deleting file "Debug\jcngn.unsuccessfulbuild".
-         Touching "Debug\jcngn.lastbuildstate".
-     1>Done Building Project "C:\Users\James\Documents\GitHub\jc_ngn\jcngn\jcngn\jcngn.vcxproj" (build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:01.45
+﻿  scenenode.cpp
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(71): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
+  Generating Code...
+  Compiling...
+  scenenodelist.cpp
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(71): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  systemclass.cpp
+  main.cpp
+  graphicsclass.cpp
+  jcngn.vcxproj -> C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.exe

@@ -45,11 +45,25 @@ public: SceneNodeList();
 		void AddSceneNode(SceneNode* sceneNode);
 		void Sort();
 		void SetFrustum(FrustumClass* f){ frustum = f;}
-		void DrawAll(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, LightShaderClass* lightShader, LightClass* light, CameraClass* camera);
-		void DrawAll(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, MultiTextureShaderClass* multiTextureShader, LightClass* light, CameraClass* camera);
+		
+		void DrawAll(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, CameraClass* camera);
+		
+		void SetLight(LightClass* l);
+		void SetLightShader(LightShaderClass* lightSh);
+		void SetLightMapShader(LightMapShaderClass* lightMapSh);
+		void SetColorShader(ColorShaderClass* colorSh);
+		void SetTextureShader(TextureShaderClass* texSh);
+		void SetMultiTextureShader(MultiTextureShaderClass* multiTexSh);
 private:
 	bool TestAgainstFrustum(SceneNode* sceneNode);
 	vector<SceneNode*> sceneNodes;
 	FrustumClass* frustum;
+
+	LightClass* light;
+	LightMapShaderClass* lightMapShader;
+	ColorShaderClass* colorShader;
+	TextureShaderClass* textureShader;
+	LightShaderClass* lightShader;
+	MultiTextureShaderClass* multiTextureShader;
 };
 #endif

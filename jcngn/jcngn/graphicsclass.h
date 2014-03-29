@@ -42,6 +42,7 @@
 #include "colorshaderclass.h"
 #include "multitextureshaderclass.h"
 #include "frustumclass.h"
+#include "lightmapshaderclass.h"
 #include <Windows.h>
 #include <iostream>
 #include <string>
@@ -91,6 +92,7 @@ private:
 	TextClass* m_Text;	
 	FrustumClass* m_Frustum;
 	SceneNodeList* m_sceneNodeList;
+	LightMapShaderClass* m_LightMapShader;
 };
 
 #endif

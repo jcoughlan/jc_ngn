@@ -90,6 +90,7 @@
     <ClCompile Include="graphicsclass.cpp" />
     <ClCompile Include="inputclass.cpp" />
     <ClCompile Include="lightclass.cpp" />
+    <ClCompile Include="lightmapshaderclass.cpp" />
     <ClCompile Include="lightshaderclass.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="modelclass.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="graphicsclass.h" />
     <ClInclude Include="inputclass.h" />
     <ClInclude Include="lightclass.h" />
+    <ClInclude Include="lightmapshaderclass.h" />
     <ClInclude Include="lightshaderclass.h" />
     <ClInclude Include="modelclass.h" />
     <ClInclude Include="multitextureshaderclass.h" />
@@ -131,8 +133,14 @@
     <ClInclude Include="timerclass.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Engine\font.ps" />
+    <None Include="..\Engine\font.vs" />
+    <None Include="..\Engine\light.vs" />
+    <None Include="..\Engine\multitexture.ps" />
+    <None Include="..\Engine\multitexture.vs" />
+    <None Include="..\Engine\texture.ps" />
+    <None Include="..\Engine\texture.vs" />
     <None Include="light.ps" />
-    <None Include="light.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

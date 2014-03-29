@@ -298,7 +298,7 @@ bool MultiTextureShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceCon
 												  D3DXMATRIX viewMatrix, D3DXMATRIX projectionMatrix, 
 												  ID3D11ShaderResourceView** textureArray)
 {
-	HRESULT result;
+	HRESULT result = 0;
     D3D11_MAPPED_SUBRESOURCE mappedResource;
 	MatrixBufferType* dataPtr;
 	unsigned int bufferNumber;
@@ -310,6 +310,9 @@ bool MultiTextureShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceCon
 	D3DXMatrixTranspose(&projectionMatrix, &projectionMatrix);
 
 	// Lock the matrix constant buffer so it can be written to.
+	if (!deviceContext)
+		return false;
+
 	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if(FAILED(result))
 	{
