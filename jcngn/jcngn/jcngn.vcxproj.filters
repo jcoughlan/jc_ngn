@@ -126,6 +126,12 @@
     <ClCompile Include="scenenodelist.cpp">
       <Filter>Source Files\SceneNodes</Filter>
     </ClCompile>
+    <ClCompile Include="multitextureshaderclass.cpp">
+      <Filter>Source Files\ShaderClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="texturearrayclass.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="colorshaderclass.h">
@@ -193,6 +199,12 @@
     </ClInclude>
     <ClInclude Include="scenenodelist.h">
       <Filter>Header Files\SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="multitextureshaderclass.h">
+      <Filter>Header Files\ShaderClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="texturearrayclass.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,7 @@ ModelClass::ModelClass()
 	m_vertexBuffer = 0;
 	m_indexBuffer = 0;
 	m_Texture = 0;
+	m_TextureArray = 0;
 	m_model = 0;
 	setIndices = 0;
 }
@@ -45,6 +46,35 @@ bool ModelClass::InitializeFromTextFile(ID3D11Device* device, char* modelFilenam
 
 	// Load the texture for this model.
 	result = LoadTexture(device, textureFilename);
+	if(!result)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool ModelClass::InitializeFromTextFile(ID3D11Device* device, char* modelFilename,  WCHAR* textureFilename1, WCHAR* textureFilename2)
+{
+	bool result;
+
+
+	// Load in the model data,
+	result = LoadModel(modelFilename);
+	if(!result)
+	{
+		return false;
+	}
+
+	// Initialize the vertex and index buffers.
+	result = InitializeBuffers(device);
+	if(!result)
+	{
+		return false;
+	}
+
+	// Load the texture for this model.
+	result = LoadTextures(device, textureFilename1, textureFilename2);
 	if(!result)
 	{
 		return false;
@@ -169,6 +199,9 @@ void ModelClass::Shutdown()
 	// Release the model texture.
 	ReleaseTexture();
 
+	// Release the model textures.
+	ReleaseTextures();
+
 	// Shutdown the vertex and index buffers.
 	ShutdownBuffers();
 
@@ -178,6 +211,32 @@ void ModelClass::Shutdown()
 	return;
 }
 
+bool ModelClass::LoadTextures(ID3D11Device* device, WCHAR* filename1, WCHAR* filename2)
+{
+	bool result;
+
+
+	// Create the texture array object.
+	m_TextureArray = new TextureArrayClass;
+	if(!m_TextureArray)
+	{
+		return false;
+	}
+
+	// Initialize the texture array object.
+	result = m_TextureArray->Initialize(device, filename1, filename2);
+	if(!result)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+ID3D11ShaderResourceView** ModelClass::GetTextureArray()
+{
+	return m_TextureArray->GetTextureArray();
+}
 
 void ModelClass::Render(ID3D11DeviceContext* deviceContext)
 {
@@ -443,6 +502,19 @@ void ModelClass::ReleaseModel()
 	{
 		delete [] m_model;
 		m_model = 0;
+	}
+
+	return;
+}
+
+void ModelClass::ReleaseTextures()
+{
+	// Release the texture array object.
+	if(m_TextureArray)
+	{
+		m_TextureArray->Shutdown();
+		delete m_TextureArray;
+		m_TextureArray = 0;
 	}
 
 	return;

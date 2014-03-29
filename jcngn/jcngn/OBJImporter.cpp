@@ -18,7 +18,7 @@ string OBJImporter::ObjToTextFile(char filename[256])
 
 	cout << "Exporting model located at " << filename << endl;
 	char largechars[100] ;
-	strcpy(largechars, filename);
+	strcpy_s(largechars, filename);
     char* chars_array = strtok(largechars, "/.");
 	char* finalFilename[4];
 	int index = 0;
@@ -38,7 +38,7 @@ string OBJImporter::ObjToTextFile(char filename[256])
 	of+=".txt";
 
 	char outputFile[100];
-	strcpy(outputFile, of.c_str());
+	strcpy_s(outputFile, of.c_str());
 
 	if (fexists(outputFile))
 	{

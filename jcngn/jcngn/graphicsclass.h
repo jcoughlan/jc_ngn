@@ -40,6 +40,7 @@
 #include "inputclass.h"
 #include "textclass.h"
 #include "colorshaderclass.h"
+#include "multitextureshaderclass.h"
 #include "frustumclass.h"
 #include <Windows.h>
 #include <iostream>
@@ -86,6 +87,7 @@ private:
 	LightClass* m_Light;
 	BitmapClass* m_Bitmap;
 	TextureShaderClass* m_TextureShader;
+	MultiTextureShaderClass* m_MultiTextureShader;
 	TextClass* m_Text;	
 	FrustumClass* m_Frustum;
 	SceneNodeList* m_sceneNodeList;

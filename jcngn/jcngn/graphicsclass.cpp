@@ -18,6 +18,8 @@ GraphicsClass::GraphicsClass()
 	 m_Text = 0;
 	 m_sceneNodeList = 0;
 	m_Frustum = 0;
+	m_MultiTextureShader = 0;
+
 }
 
 
@@ -65,16 +67,18 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	// Set the initial position of the camera.
 	m_Camera->SetPosition(0.0f, 3.0f, -10.0f);
-	cubeNode = new SceneNode("../Engine/data/cube.obj", m_D3D->GetDevice() );
-	sphereNode = new SceneNode("../Engine/data/sphere.obj", m_D3D->GetDevice() );
-	planeNode = new SceneNode( SCENENODE_TYPE::PLANE_MESH, m_D3D->GetDevice());
+	cubeNode = new SceneNode("../Engine/data/cube.obj", m_D3D->GetDevice(), L"../Engine/data/stone01.dds", 
+				     L"../Engine/data/dirt01.dds");
+	/*sphereNode = new SceneNode("../Engine/data/sphere.obj", m_D3D->GetDevice(),  L"../Engine/data/stone01.dds", 
+				     L"../Engine/data/dirt01.dds");
+	planeNode = new SceneNode( PLANE_MESH, m_D3D->GetDevice());*/
 	
 	m_sceneNodeList->AddSceneNode(cubeNode);
-	m_sceneNodeList->AddSceneNode(sphereNode);
-	m_sceneNodeList->AddSceneNode(planeNode);
+	//m_sceneNodeList->AddSceneNode(sphereNode);
+//	m_sceneNodeList->AddSceneNode(planeNode);
 
 	// Create the light shader object.
-	m_LightShader = new LightShaderClass;
+/*	m_LightShader = new LightShaderClass;
 	if(!m_LightShader)
 	{
 		return false;
@@ -101,7 +105,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
 	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
 	//lower = stronger
-	m_Light->SetSpecularPower(20.f);
+	m_Light->SetSpecularPower(20.f);*/
 
 	lastMousePos[0] = 0.0;
 	lastMousePos[1] = 0.0;
@@ -160,8 +164,20 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	return true;
+	return true;// Create the multitexture shader object.
+	m_MultiTextureShader = new MultiTextureShaderClass;
+	if(!m_MultiTextureShader)
+	{
+		return false;
+	}
 
+	// Initialize the multitexture shader object.
+	result = m_MultiTextureShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the multitexture shader object.", L"Error", MB_OK);
+		return false;
+	}
 
 	return true;
 }
@@ -169,6 +185,14 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 void GraphicsClass::Shutdown()
 {
+
+	// Release the multitexture shader object.
+	if(m_MultiTextureShader)
+	{
+		m_MultiTextureShader->Shutdown();
+		delete m_MultiTextureShader;
+		m_MultiTextureShader = 0;
+	}
 
 	if(m_Frustum)
 	{
@@ -182,6 +206,7 @@ void GraphicsClass::Shutdown()
 		delete m_sceneNodeList;
 		m_sceneNodeList = 0;
 	}
+	 
 
 	// Release the bitmap object.
 	if(m_Bitmap)
@@ -265,16 +290,16 @@ bool GraphicsClass::DrawPerspective()
 	m_sceneNodeList->SetFrustum(m_Frustum);
 	// Draw our meshes	
 		
-	sphereNode->setTranslation(0,1,2);
+	//sphereNode->setTranslation(0,1,2);
 	cubeNode->setTranslation(0,-1,0);
 
-	planeNode->setRotationX(90 * DEG_2_RAD);
-	planeNode->setScale(2.0,2.0,2.0);
-	planeNode->setTranslation(0,-2,0);
+	//planeNode->setRotationX((float)(90 * DEG_2_RAD));
+	//planeNode->setScale(2.0,2.0,2.0);
+	//planeNode->setTranslation(0,-2,0);
 
 	m_sceneNodeList->Sort();
 
-	m_sceneNodeList->DrawAll(m_D3D->GetDeviceContext(),worldMatrix, viewMatrix, projectionMatrix, m_LightShader, m_Light, m_Camera);
+	m_sceneNodeList->DrawAll(m_D3D->GetDeviceContext(),worldMatrix, viewMatrix, projectionMatrix, m_MultiTextureShader, m_Light, m_Camera);
 	
 	return true;
 
@@ -389,8 +414,8 @@ bool GraphicsClass::HandleKeyboardInput(unsigned int keyIndex){
 	float pitch = m_Camera->GetPitch();
 	float yaw   =m_Camera->GetYaw();
 
-	float pitchRadian = pitch * (PI / 180); // X rotation
-	float yawRadian   = yaw   * (PI / 180); // Y rotation
+	float pitchRadian =(float)( pitch * (PI / 180)); // X rotation
+	float yawRadian   =(float)(yaw   * (PI / 180)); // Y rotation
 
 	float newPosX = offset *  sinf( yawRadian ) * cosf( pitchRadian );
 	float newPosY = offset * -sinf( pitchRadian );

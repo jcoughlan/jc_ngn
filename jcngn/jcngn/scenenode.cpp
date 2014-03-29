@@ -4,7 +4,7 @@
 #include "scenenode.h"
 
 
-SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D)
+SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* textureLoc)
 {
 	scenenode_type = OBJ_MESH;
 	model = 0;	
@@ -19,7 +19,38 @@ SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D)
 		//TODO deal with error
 	}
 	
-	int result = model->InitializeFromTextFile(m_D3D, (char*)objTxtPath.c_str(), L"../Engine/data/seafloor.dds");
+	int result = model->InitializeFromTextFile(m_D3D, (char*)objTxtPath.c_str(), textureLoc);
+	if(!result)
+	{
+		//MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
+		//TODO deal with error
+	}
+
+	D3DXMatrixTranslation(&translationMatrix,0.0f, 0.0f, 0.0f);
+	D3DXMatrixRotationX(&rotationMatrixX, 0.f);
+	D3DXMatrixRotationY(&rotationMatrixY, 0.f);
+	D3DXMatrixRotationZ(&rotationMatrixZ, 0.f);
+	D3DXMatrixScaling(&scalingMatrix, 1.0f, 1.0f, 1.0f);
+
+		renderSceneNode = true;
+}
+
+SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* textureLoc1, WCHAR* textureLoc2)
+{
+	scenenode_type = OBJ_MESH;
+	model = 0;	
+	objImporter = 0;
+	objImporter = new OBJImporter();
+	objTxtPath =objImporter->ObjToTextFile((char*)obj_path.c_str());
+	
+	// Create the model object.
+	model = new ModelClass;
+	if(!model)
+	{
+		//TODO deal with error
+	}
+	
+	int result = model->InitializeFromTextFile(m_D3D, (char*)objTxtPath.c_str(), textureLoc1, textureLoc2);
 	if(!result)
 	{
 		//MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
@@ -123,5 +154,17 @@ bool SceneNode::Draw(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix,
 	bool result = lightShader->Render(deviceContext, model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
 				       model->GetTexture(), light->GetDirection(), light->GetAmbientColor(), light->GetDiffuseColor(), 
 				       camera->GetPosition(), light->GetSpecularColor(), light->GetSpecularPower());
+	return result;
+}
+
+bool SceneNode::Draw(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, MultiTextureShaderClass* multiTextureShader, LightClass* light, CameraClass* camera)
+{
+	model->Render(deviceContext);
+
+	D3DXMATRIX modelMatrix = ( rotationMatrixX * rotationMatrixY * rotationMatrixZ *translationMatrix* scalingMatrix);
+	worldMatrix = modelMatrix*worldMatrix;
+	// Render the model using the light shader.
+	bool result = multiTextureShader->Render(deviceContext, model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
+		model->GetTextureArray());
 	return result;
 }

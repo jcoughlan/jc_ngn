@@ -67,8 +67,8 @@ private:
 	string LoadDataStructures(char*, int, int, int, int, char*);
 	bool fexists(const char *filename)
 	{
-	 ifstream ifile(filename);
-		return ifile;
+		 ifstream ifile(filename);
+		return (bool)ifile;
 	}
 };
 

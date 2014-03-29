@@ -52,6 +52,23 @@ void SceneNodeList::DrawAll(ID3D11DeviceContext* deviceContext, D3DXMATRIX world
 
 }
 
+void SceneNodeList::DrawAll(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, MultiTextureShaderClass* multiTextureShader, LightClass* light, CameraClass* camera)
+{
+	int numSceneNodes = sceneNodes.size();
+
+	for (int i = 0; i < numSceneNodes; i++)
+	{
+		if (sceneNodes.at(i)->getRenderSceneNode())
+		{
+			//draw
+			sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, multiTextureShader, light, camera);
+
+
+		}
+
+	}
+}
+
 bool SceneNodeList::TestAgainstFrustum(SceneNode* sceneNode)
 {
 	if (frustum)
