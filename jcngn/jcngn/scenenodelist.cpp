@@ -3,6 +3,12 @@
 SceneNodeList::SceneNodeList()
 {
 	frustum = 0;
+	light =  0;
+	lightMapShader = 0;
+	colorShader = 0;
+	textureShader = 0;
+	lightShader = 0;
+	multiTextureShader = 0;
 }
 SceneNodeList::~SceneNodeList()
 {
@@ -34,7 +40,7 @@ void SceneNodeList::Sort()
 	//sort according to distance from camera
 }
 
-void SceneNodeList::DrawAll(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, LightShaderClass* lightShader, LightClass* light, CameraClass* camera)
+void SceneNodeList::DrawAll(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix,  CameraClass* camera)
 {
 	int numSceneNodes = sceneNodes.size();
 
@@ -43,8 +49,15 @@ void SceneNodeList::DrawAll(ID3D11DeviceContext* deviceContext, D3DXMATRIX world
 		if (sceneNodes.at(i)->getRenderSceneNode())
 		{
 			//draw
-			sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, lightShader, light, camera);
-
+			switch (sceneNodes.at(i)->getShaderType())
+			{
+			case SHADER_UNKNOWN: break;
+			case COLOR: break;
+			case TEXTURE: if (textureShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, textureShader, light, camera);break;
+			case LIGHT: if (lightShader && light)sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, lightShader, light, camera); break;
+			case MULTI_TEXTURE: if (multiTextureShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, multiTextureShader, light, camera); break;
+			case LIGHT_MAP: if (lightMapShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, lightMapShader, light, camera); break;
+			}
 
 		}
 
@@ -52,22 +65,6 @@ void SceneNodeList::DrawAll(ID3D11DeviceContext* deviceContext, D3DXMATRIX world
 
 }
 
-void SceneNodeList::DrawAll(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, MultiTextureShaderClass* multiTextureShader, LightClass* light, CameraClass* camera)
-{
-	int numSceneNodes = sceneNodes.size();
-
-	for (int i = 0; i < numSceneNodes; i++)
-	{
-		if (sceneNodes.at(i)->getRenderSceneNode())
-		{
-			//draw
-			sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, multiTextureShader, light, camera);
-
-
-		}
-
-	}
-}
 
 bool SceneNodeList::TestAgainstFrustum(SceneNode* sceneNode)
 {
@@ -87,4 +84,29 @@ bool SceneNodeList::TestAgainstFrustum(SceneNode* sceneNode)
 	}
 
 	return true;
+}
+
+void SceneNodeList::SetLightShader(LightShaderClass* lightSh)
+{
+	lightShader = lightSh;
+}
+void SceneNodeList::SetLightMapShader(LightMapShaderClass* lightMapSh)
+{
+	lightMapShader = lightMapSh;
+}
+void SceneNodeList::SetColorShader(ColorShaderClass* colorSh)
+{
+	colorShader = colorSh;
+}
+void SceneNodeList::SetTextureShader(TextureShaderClass* texSh)
+{
+		textureShader = texSh;
+}
+void SceneNodeList::SetMultiTextureShader(MultiTextureShaderClass* multiTexSh)
+{
+	multiTextureShader = multiTexSh;
+}
+void SceneNodeList::SetLight(LightClass* l)
+{
+	light = l;
 }

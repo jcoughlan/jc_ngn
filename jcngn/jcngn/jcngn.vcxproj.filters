@@ -132,6 +132,9 @@
     <ClCompile Include="texturearrayclass.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="lightmapshaderclass.cpp">
+      <Filter>Source Files\ShaderClasses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="colorshaderclass.h">
@@ -206,12 +209,33 @@
     <ClInclude Include="texturearrayclass.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="lightmapshaderclass.h">
+      <Filter>Header Files\ShaderClasses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="light.ps">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="light.vs">
+    <None Include="..\Engine\font.ps">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Engine\font.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Engine\light.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Engine\multitexture.ps">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Engine\multitexture.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Engine\texture.ps">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Engine\texture.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

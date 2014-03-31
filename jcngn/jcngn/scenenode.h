@@ -32,6 +32,9 @@
 #include "lightclass.h"
 #include "cameraclass.h"
 #include "lightshaderclass.h"
+#include "colorshaderclass.h"
+#include "textureshaderclass.h"
+#include "lightmapshaderclass.h"
 #include "multitextureshaderclass.h"
 #include <d3d11.h>
 #include <d3dx10math.h>
@@ -46,17 +49,34 @@ enum SCENENODE_TYPE
 	OBJ_MESH,
 	UNKNOWN
 }; 
+
+
+enum SHADER_TYPE
+{
+	COLOR,
+	TEXTURE,
+	MULTI_TEXTURE,
+	LIGHT,
+	LIGHT_MAP,
+	SHADER_UNKNOWN
+};
+
 class SceneNode
 {
 public: 
-		SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* );
-		SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* ,  WCHAR* );
-		SceneNode(SCENENODE_TYPE, ID3D11Device* m_D3D);
+		SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR*, SHADER_TYPE );
+		SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* ,  WCHAR*,SHADER_TYPE );
+		SceneNode(SCENENODE_TYPE, ID3D11Device* m_D3D, SHADER_TYPE);
 		~SceneNode();
 
 		ModelClass* GetModel(){ return model;}
 		bool Draw(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, MultiTextureShaderClass* multiTextureShader, LightClass* light, CameraClass* camera);
 		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, LightShaderClass*, LightClass*, CameraClass*);
+		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, LightMapShaderClass*, LightClass*, CameraClass*);
+		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, TextureShaderClass*, LightClass*, CameraClass*);
+		
+		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, ColorShaderClass*, LightClass*, CameraClass*);
+		
 		void setTranslation(float x, float y, float z);
 		void setRotationX(float angle);
 		void setRotationY(float angle);
@@ -66,6 +86,7 @@ public:
 		void getTranslation(float &x, float &y, float&z); 		
 		void getScale(float &x, float &y, float&z);
 		bool getRenderSceneNode() { return renderSceneNode;}
+		SHADER_TYPE getShaderType() {return shader_type;}
 	
 private:
 	string objTxtPath;
@@ -78,6 +99,7 @@ private:
 	D3DXMATRIX rotationMatrixY;
 	D3DXMATRIX rotationMatrixZ;
 	D3DXMATRIX scalingMatrix;
+	SHADER_TYPE shader_type;
 };
 
 #endif
