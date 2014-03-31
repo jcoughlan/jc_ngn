@@ -135,6 +135,15 @@
     <ClCompile Include="lightmapshaderclass.cpp">
       <Filter>Source Files\ShaderClasses</Filter>
     </ClCompile>
+    <ClCompile Include="alphamapshaderclass.cpp">
+      <Filter>Source Files\ShaderClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="bumpmapshaderclass.cpp">
+      <Filter>Source Files\ShaderClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="specmapshaderclass.cpp">
+      <Filter>Source Files\ShaderClasses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="colorshaderclass.h">
@@ -210,6 +219,15 @@
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="lightmapshaderclass.h">
+      <Filter>Header Files\ShaderClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="alphamapshaderclass.h">
+      <Filter>Header Files\ShaderClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="bumpmapshaderclass.h">
+      <Filter>Header Files\ShaderClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="specmapshaderclass.h">
       <Filter>Header Files\ShaderClasses</Filter>
     </ClInclude>
   </ItemGroup>

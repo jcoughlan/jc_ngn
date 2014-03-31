@@ -9,6 +9,7 @@ SceneNodeList::SceneNodeList()
 	textureShader = 0;
 	lightShader = 0;
 	multiTextureShader = 0;
+	alphaMapShader = 0;
 }
 SceneNodeList::~SceneNodeList()
 {
@@ -57,6 +58,9 @@ void SceneNodeList::DrawAll(ID3D11DeviceContext* deviceContext, D3DXMATRIX world
 			case LIGHT: if (lightShader && light)sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, lightShader, light, camera); break;
 			case MULTI_TEXTURE: if (multiTextureShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, multiTextureShader, light, camera); break;
 			case LIGHT_MAP: if (lightMapShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, lightMapShader, light, camera); break;
+			case ALPHA_MAP: if (alphaMapShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, alphaMapShader, light, camera); break;
+			case BUMP_MAP: if (bumpMapShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, bumpMapShader, light, camera); break;
+			case SPEC_MAP: if (specMapShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, specMapShader, light, camera); break;
 			}
 
 		}
@@ -105,6 +109,20 @@ void SceneNodeList::SetTextureShader(TextureShaderClass* texSh)
 void SceneNodeList::SetMultiTextureShader(MultiTextureShaderClass* multiTexSh)
 {
 	multiTextureShader = multiTexSh;
+}
+void  SceneNodeList::SetAlphaMapShader(AlphaMapShaderClass* alphaMapSh)
+{
+	alphaMapShader = alphaMapSh;
+}
+
+void  SceneNodeList::SetBumpMapShader(BumpMapShaderClass* bumpMapSh)
+{
+	bumpMapShader = bumpMapSh;
+}
+
+void  SceneNodeList::SetSpecMapShader(SpecMapShaderClass* specMapSh)
+{
+	specMapShader = specMapSh;
 }
 void SceneNodeList::SetLight(LightClass* l)
 {

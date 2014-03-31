@@ -19,8 +19,10 @@ GraphicsClass::GraphicsClass()
 	m_sceneNodeList = 0;
 	m_Frustum = 0;
 	m_MultiTextureShader = 0;
+	m_BumpMapShader = 0;
 	m_LightMapShader = 0;
-
+	m_AlphaMapShader = 0;
+	m_SpecMapShader = 0;
 }
 
 
@@ -56,6 +58,8 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	m_sceneNodeList = new SceneNodeList();
 
+	InitializeShaders(screenWidth, screenHeight, hwnd, baseViewMatrix);
+
 	// Create the camera object.
 	m_Camera = new CameraClass;
 	if(!m_Camera)
@@ -67,43 +71,24 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Camera->GetViewMatrix(baseViewMatrix);
 
 	// Set the initial position of the camera.
+
 	m_Camera->SetPosition(0.0f, 3.0f, -10.0f);
-	cubeNode = new SceneNode("../Engine/data/cube.obj", m_D3D->GetDevice(), L"../Engine/data/stone01.dds", 
-				     L"../Engine/data/light01.dds", LIGHT_MAP);
+	cubeNode = new SceneNode("../Engine/data/cube.obj", m_D3D->GetDevice(),    L"../Engine/data/stone02.dds", 
+				     L"../Engine/data/bump02.dds", L"../Engine/data/spec02.dds", SPEC_MAP);
+
 	sphereNode = new SceneNode("../Engine/data/sphere.obj", m_D3D->GetDevice(),  L"../Engine/data/stone01.dds", LIGHT);
 
-	planeNode = new SceneNode( PLANE_MESH, m_D3D->GetDevice(), TEXTURE);
+	planeNode = new SceneNode( PLANE_MESH, m_D3D->GetDevice(),  L"../Engine/data/stone01.dds", 
+				     L"../Engine/data/bump01.dds",BUMP_MAP);
 	
 	m_sceneNodeList->AddSceneNode(cubeNode);
 	m_sceneNodeList->AddSceneNode(sphereNode);
-	m_sceneNodeList->AddSceneNode(planeNode);
-
-	// Create the light shader object.
-	m_LightShader = new LightShaderClass;
-	if(!m_LightShader)
-	{
-		return false;
-	}
-
-	// Initialize the light shader object.
-	result = m_LightShader->Initialize(m_D3D->GetDevice(), hwnd);
-	if(!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the light shader object.", L"Error", MB_OK);
-		return false;
-	}
-
-	// Create the light object.
-	m_Light = new LightClass;
-	if(!m_Light)
-	{
-		return false;
-	}
+	m_sceneNodeList->AddSceneNode(planeNode);	
 
 	// Initialize the light object.
 	m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
+	m_Light->SetDirection(0.0f, 0.2f, 1.0f);
 	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
 	//lower = stronger
 	m_Light->SetSpecularPower(20.f);
@@ -111,99 +96,17 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	lastMousePos[0] = 0.0;
 	lastMousePos[1] = 0.0;
 
-	//orthographic bitmap code
-	// Create the texture shader object.
-	m_TextureShader = new TextureShaderClass;
-	if(!m_TextureShader)
-	{
-		return false;
-	}
-
-	// Initialize the texture shader object.
-	result = m_TextureShader->Initialize(m_D3D->GetDevice(), hwnd);
-	if(!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
-		return false;
-	}
-
-
-	// Create the bitmap object.
-	m_Bitmap = new BitmapClass;
-	if(!m_Bitmap)
-	{
-		return false;
-	}
-
-	// Initialize the bitmap object.
-	result = m_Bitmap->Initialize(m_D3D->GetDevice(), screenWidth, screenHeight, L"../Engine/data/seafloor.dds", 256, 256);
-	if(!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the bitmap object.", L"Error", MB_OK);
-		return false;
-	}
-	
-	// Create the text object.
-	m_Text = new TextClass;
-	if(!m_Text)
-	{
-		return false;
-	}
-
-	// Initialize the text object.
-	result = m_Text->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), hwnd, screenWidth, screenHeight, baseViewMatrix);
-	if(!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the text object.", L"Error", MB_OK);
-		return false;
-	}
-
-	// Create the frustum object.
-	m_Frustum = new FrustumClass;
-	if(!m_Frustum)
-	{
-		return false;
-	}
-
-	// Create the multitexture shader object.
-	m_MultiTextureShader = new MultiTextureShaderClass;
-	if(!m_MultiTextureShader)
-	{
-		return false;
-	}
-
-	// Initialize the multitexture shader object.
-	result = m_MultiTextureShader->Initialize(m_D3D->GetDevice(), hwnd);
-	if(!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the multitexture shader object.", L"Error", MB_OK);
-		return false;
-	}
-
-// Create the light map shader object.
-	m_LightMapShader = new LightMapShaderClass;
-	if(!m_LightMapShader)
-	{
-		return false;
-	}
-
-	// Initialize the light map shader object.
-	result = m_LightMapShader->Initialize(m_D3D->GetDevice(), hwnd);
-	if(!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the light map shader object.", L"Error", MB_OK);
-		return false;
-	}
-
 	//set our light
 	m_sceneNodeList->SetLight(m_Light);
 	//set all of our shaders
+	m_sceneNodeList->SetBumpMapShader(m_BumpMapShader);
+	m_sceneNodeList->SetSpecMapShader(m_SpecMapShader);
 	m_sceneNodeList->SetTextureShader(m_TextureShader);
 	m_sceneNodeList->SetLightMapShader(m_LightMapShader);
 	m_sceneNodeList->SetLightShader(m_LightShader);
 	m_sceneNodeList->SetMultiTextureShader(m_MultiTextureShader);
+	m_sceneNodeList->SetAlphaMapShader(m_AlphaMapShader);
 	return true;
-
 }
 
 
@@ -215,6 +118,30 @@ void GraphicsClass::Shutdown()
 		m_LightMapShader->Shutdown();
 		delete m_LightMapShader;
 		m_LightMapShader = 0;
+	}
+
+	// Release the specular map shader object.
+	if(m_SpecMapShader)
+	{
+		m_SpecMapShader->Shutdown();
+		delete m_SpecMapShader;
+		m_SpecMapShader = 0;
+	}
+
+	// Release the bump map shader object.
+	if(m_BumpMapShader)
+	{
+		m_BumpMapShader->Shutdown();
+		delete m_BumpMapShader;
+		m_BumpMapShader = 0;
+	}
+
+	// Release the alpha map shader object.
+	if(m_AlphaMapShader)
+	{
+		m_AlphaMapShader->Shutdown();
+		delete m_AlphaMapShader;
+		m_AlphaMapShader = 0;
 	}
 
 	// Release the multitexture shader object.
@@ -452,6 +379,11 @@ bool GraphicsClass::HandleKeyboardInput(unsigned int keyIndex){
 	float newPosY = offset * -sinf( pitchRadian );
 	float newPosZ = offset *  cosf( yawRadian ) * cosf( pitchRadian );	
 
+	yawRadian   =(float)((yaw+90)   * (PI / 180));
+	float otherPosX = offset *  sinf( yawRadian ) * cosf( pitchRadian );
+	float otherPosY = offset * -sinf( pitchRadian );
+	float otherPosZ = offset *  cosf( yawRadian ) * cosf( pitchRadian );	
+
 
 	switch (keyIndex)
 	{		
@@ -465,11 +397,11 @@ bool GraphicsClass::HandleKeyboardInput(unsigned int keyIndex){
 
 		//movecameraLeft
 		//"A"
-		//case(65):m_Camera->SetPosition(camX +newPosX, camY - newPosY,camZ - newPosZ);break;
+		case(65):m_Camera->SetPosition(camX -otherPosX, camY -otherPosY,camZ -otherPosZ);break;
 
 		//movecameraRight
 		//"D"
-		//case(68): m_Camera->SetPosition(camX- newPosX, camY,camZ);break;
+		case(68): m_Camera->SetPosition(camX +otherPosX, camY +otherPosY,camZ +otherPosZ);break;
 
 		//movecameraup
 		case(VK_SPACE): m_Camera->SetPosition(camX, camY+offset,camZ);break;
@@ -483,4 +415,157 @@ bool GraphicsClass::HandleKeyboardInput(unsigned int keyIndex){
 
 }
 
+
+bool GraphicsClass::InitializeShaders(int screenWidth, int screenHeight,HWND hwnd, D3DMATRIX& baseViewMatrix)
+{
+	bool result = false;
+	// Create the light shader object.
+	m_LightShader = new LightShaderClass;
+	if(!m_LightShader)
+	{
+		return false;
+	}
+
+	// Initialize the light shader object.
+	result = m_LightShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the light shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create the light object.
+	m_Light = new LightClass;
+	if(!m_Light)
+	{
+		return false;
+	}
+
+	m_TextureShader = new TextureShaderClass;
+	if(!m_TextureShader)
+	{
+		return false;
+	}
+
+	// Initialize the texture shader object.
+	result = m_TextureShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+
+	// Create the bitmap object.
+	m_Bitmap = new BitmapClass;
+	if(!m_Bitmap)
+	{
+		return false;
+	}
+
+	// Initialize the bitmap object.
+	result = m_Bitmap->Initialize(m_D3D->GetDevice(), screenWidth, screenHeight, L"../Engine/data/seafloor.dds", 256, 256);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the bitmap object.", L"Error", MB_OK);
+		return false;
+	}
+	
+	// Create the text object.
+	m_Text = new TextClass;
+	if(!m_Text)
+	{
+		return false;
+	}
+
+	// Initialize the text object.
+	result = m_Text->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), hwnd, screenWidth, screenHeight, baseViewMatrix);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the text object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create the frustum object.
+	m_Frustum = new FrustumClass;
+	if(!m_Frustum)
+	{
+		return false;
+	}
+
+	// Create the multitexture shader object.
+	m_MultiTextureShader = new MultiTextureShaderClass;
+	if(!m_MultiTextureShader)
+	{
+		return false;
+	}
+
+	// Initialize the multitexture shader object.
+	result = m_MultiTextureShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the multitexture shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+// Create the light map shader object.
+	m_LightMapShader = new LightMapShaderClass;
+	if(!m_LightMapShader)
+	{
+		return false;
+	}
+
+	// Initialize the light map shader object.
+	result = m_LightMapShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the light map shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create the alpha map shader object.
+	m_AlphaMapShader = new AlphaMapShaderClass;
+	if(!m_AlphaMapShader)
+	{
+		return false;
+	}
+
+	// Initialize the alpha map shader object.
+	result = m_AlphaMapShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the alpha map shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create the bump map shader object.
+	m_BumpMapShader = new BumpMapShaderClass;
+	if(!m_BumpMapShader)
+	{
+		return false;
+	}
+
+	// Initialize the bump map shader object.
+	result = m_BumpMapShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the bump map shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create the specular map shader object.
+	m_SpecMapShader = new SpecMapShaderClass;
+	if(!m_SpecMapShader)
+	{
+		return false;
+	}
+
+	// Initialize the specular map shader object.
+	result = m_SpecMapShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the specular map shader object.", L"Error", MB_OK);
+		return false;
+	}
+}
 

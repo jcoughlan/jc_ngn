@@ -78,7 +78,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="alphamapshaderclass.cpp" />
     <ClCompile Include="bitmapclass.cpp" />
+    <ClCompile Include="bumpmapshaderclass.cpp" />
     <ClCompile Include="cameraclass.cpp" />
     <ClCompile Include="colorshaderclass.cpp" />
     <ClCompile Include="cpuclass.cpp" />
@@ -98,6 +100,7 @@
     <ClCompile Include="OBJImporter.cpp" />
     <ClCompile Include="scenenode.cpp" />
     <ClCompile Include="scenenodelist.cpp" />
+    <ClCompile Include="specmapshaderclass.cpp" />
     <ClCompile Include="systemclass.cpp" />
     <ClCompile Include="textclass.cpp" />
     <ClCompile Include="texturearrayclass.cpp" />
@@ -106,7 +109,9 @@
     <ClCompile Include="timerclass.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="alphamapshaderclass.h" />
     <ClInclude Include="bitmapclass.h" />
+    <ClInclude Include="bumpmapshaderclass.h" />
     <ClInclude Include="cameraclass.h" />
     <ClInclude Include="colorshaderclass.h" />
     <ClInclude Include="cpuclass.h" />
@@ -125,6 +130,7 @@
     <ClInclude Include="OBJImporter.h" />
     <ClInclude Include="scenenode.h" />
     <ClInclude Include="scenenodelist.h" />
+    <ClInclude Include="specmapshaderclass.h" />
     <ClInclude Include="systemclass.h" />
     <ClInclude Include="textclass.h" />
     <ClInclude Include="texturearrayclass.h" />

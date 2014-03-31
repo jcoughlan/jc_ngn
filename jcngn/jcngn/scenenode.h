@@ -36,6 +36,9 @@
 #include "textureshaderclass.h"
 #include "lightmapshaderclass.h"
 #include "multitextureshaderclass.h"
+#include "alphamapshaderclass.h"
+#include "bumpmapshaderclass.h"
+#include "specmapshaderclass.h"
 #include <d3d11.h>
 #include <d3dx10math.h>
 /////////////////////////
@@ -58,6 +61,9 @@ enum SHADER_TYPE
 	MULTI_TEXTURE,
 	LIGHT,
 	LIGHT_MAP,
+	ALPHA_MAP,
+	BUMP_MAP,
+	SPEC_MAP,
 	SHADER_UNKNOWN
 };
 
@@ -66,7 +72,10 @@ class SceneNode
 public: 
 		SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR*, SHADER_TYPE );
 		SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* ,  WCHAR*,SHADER_TYPE );
-		SceneNode(SCENENODE_TYPE, ID3D11Device* m_D3D, SHADER_TYPE);
+		SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* ,  WCHAR*, WCHAR*, SHADER_TYPE );
+		SceneNode(SCENENODE_TYPE, ID3D11Device* m_D3D, WCHAR*,SHADER_TYPE);
+		SceneNode(SCENENODE_TYPE, ID3D11Device* m_D3D, WCHAR*,WCHAR*,SHADER_TYPE);
+		SceneNode(SCENENODE_TYPE, ID3D11Device* m_D3D,WCHAR*,WCHAR*,WCHAR*, SHADER_TYPE);
 		~SceneNode();
 
 		ModelClass* GetModel(){ return model;}
@@ -74,8 +83,10 @@ public:
 		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, LightShaderClass*, LightClass*, CameraClass*);
 		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, LightMapShaderClass*, LightClass*, CameraClass*);
 		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, TextureShaderClass*, LightClass*, CameraClass*);
-		
 		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, ColorShaderClass*, LightClass*, CameraClass*);
+		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, AlphaMapShaderClass*, LightClass*, CameraClass*);
+		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, BumpMapShaderClass*, LightClass*, CameraClass*);
+		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, SpecMapShaderClass*, LightClass*, CameraClass*);
 		
 		void setTranslation(float x, float y, float z);
 		void setRotationX(float angle);

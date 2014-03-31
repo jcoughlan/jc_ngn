@@ -54,6 +54,9 @@ public: SceneNodeList();
 		void SetColorShader(ColorShaderClass* colorSh);
 		void SetTextureShader(TextureShaderClass* texSh);
 		void SetMultiTextureShader(MultiTextureShaderClass* multiTexSh);
+		void SetAlphaMapShader(AlphaMapShaderClass* alphaMapSh);
+		void SetBumpMapShader(BumpMapShaderClass* bumpMapSh);
+		void SetSpecMapShader(SpecMapShaderClass* specMapSh);
 private:
 	bool TestAgainstFrustum(SceneNode* sceneNode);
 	vector<SceneNode*> sceneNodes;
@@ -65,5 +68,8 @@ private:
 	TextureShaderClass* textureShader;
 	LightShaderClass* lightShader;
 	MultiTextureShaderClass* multiTextureShader;
+	AlphaMapShaderClass* alphaMapShader;
+	BumpMapShaderClass* bumpMapShader;
+	SpecMapShaderClass* specMapShader;
 };
 #endif

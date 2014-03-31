@@ -43,6 +43,9 @@
 #include "multitextureshaderclass.h"
 #include "frustumclass.h"
 #include "lightmapshaderclass.h"
+#include "alphamapshaderclass.h"
+#include "bumpmapshaderclass.h"
+#include "specmapshaderclass.h"
 #include <Windows.h>
 #include <iostream>
 #include <string>
@@ -76,6 +79,7 @@ public:
 	bool Frame(int fps, int cpu, float frameTime);
 	bool HandleKeyboardInput(unsigned int keyIndex);
 	bool HandleMouseInput(int mouseX, int mouseY);
+	bool InitializeShaders(int, int, HWND, D3DMATRIX&);
 
 private:
 	float lastMousePos[2];
@@ -93,6 +97,9 @@ private:
 	FrustumClass* m_Frustum;
 	SceneNodeList* m_sceneNodeList;
 	LightMapShaderClass* m_LightMapShader;
+	BumpMapShaderClass* m_BumpMapShader;
+	AlphaMapShaderClass* m_AlphaMapShader;
+	SpecMapShaderClass* m_SpecMapShader;
 };
 
 #endif
