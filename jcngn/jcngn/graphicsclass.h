@@ -88,6 +88,7 @@ private:
 	SceneNode* cubeNode;
 	SceneNode* planeNode;
 	SceneNode* sphereNode;
+	SceneNode* md5Node;
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;
 	BitmapClass* m_Bitmap;

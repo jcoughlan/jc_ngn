@@ -40,7 +40,7 @@ bool ModelClass::InitializeFromTextFile(ID3D11Device* device, char* modelFilenam
 	CalculateModelVectors();
 
 	// Initialize the vertex and index buffers.
-	result = InitializeBuffers(device);
+	InitializeBuffers(device);
 	if(!result)
 	{
 		return false;

@@ -47,26 +47,40 @@ void SceneNodeList::DrawAll(ID3D11DeviceContext* deviceContext, D3DXMATRIX world
 
 	for (int i = 0; i < numSceneNodes; i++)
 	{
+
+
 		if (sceneNodes.at(i)->getRenderSceneNode())
 		{
 			//draw
-			switch (sceneNodes.at(i)->getShaderType())
-			{
-			case SHADER_UNKNOWN: break;
-			case COLOR: break;
-			case TEXTURE: if (textureShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, textureShader, light, camera);break;
-			case LIGHT: if (lightShader && light)sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, lightShader, light, camera); break;
-			case MULTI_TEXTURE: if (multiTextureShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, multiTextureShader, light, camera); break;
-			case LIGHT_MAP: if (lightMapShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, lightMapShader, light, camera); break;
-			case ALPHA_MAP: if (alphaMapShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, alphaMapShader, light, camera); break;
-			case BUMP_MAP: if (bumpMapShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, bumpMapShader, light, camera); break;
-			case SPEC_MAP: if (specMapShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, specMapShader, light, camera); break;
+			if (sceneNodes.at(i)->getSceneNodeType() == MD5_MESH)
+			{			
+				
+				switch (sceneNodes.at(i)->getShaderType())
+				{
+					case TEXTURE:if (textureShader)sceneNodes.at(i)->DrawMD5(deviceContext,worldMatrix, viewMatrix, projectionMatrix, textureShader, light, camera); break;
+					case LIGHT: if (lightShader&&light)sceneNodes.at(i)->DrawMD5(deviceContext,worldMatrix, viewMatrix, projectionMatrix, lightShader, light, camera); break;
+				}
 			}
+			else
+			{
 
+				switch (sceneNodes.at(i)->getShaderType())
+				{
+					case SHADER_UNKNOWN: break;
+					case COLOR: break;
+					case TEXTURE: if (textureShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, textureShader, light, camera);break;
+					case LIGHT: if (lightShader && light)sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, lightShader, light, camera); break;
+					case MULTI_TEXTURE: if (multiTextureShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, multiTextureShader, light, camera); break;
+					case LIGHT_MAP: if (lightMapShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, lightMapShader, light, camera); break;
+					case ALPHA_MAP: if (alphaMapShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, alphaMapShader, light, camera); break;
+					case BUMP_MAP: if (bumpMapShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, bumpMapShader, light, camera); break;
+					case SPEC_MAP: if (specMapShader) sceneNodes.at(i)->Draw(deviceContext,worldMatrix, viewMatrix, projectionMatrix, specMapShader, light, camera); break;
+				}
+			}
 		}
+			
 
 	}
-
 }
 
 
@@ -84,7 +98,7 @@ bool SceneNodeList::TestAgainstFrustum(SceneNode* sceneNode)
 
 	renderModel = frustum->CheckSphere(posX, posY, posZ, radius);
 		if (!renderModel)
-			return false;
+			return true;
 	}
 
 	return true;

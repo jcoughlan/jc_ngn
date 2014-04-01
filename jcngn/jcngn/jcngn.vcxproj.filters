@@ -144,6 +144,9 @@
     <ClCompile Include="specmapshaderclass.cpp">
       <Filter>Source Files\ShaderClasses</Filter>
     </ClCompile>
+    <ClCompile Include="md5model.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="colorshaderclass.h">
@@ -166,9 +169,6 @@
     </ClInclude>
     <ClInclude Include="textureclass.h">
       <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="modelclass.h">
-      <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="inputclass.h">
       <Filter>Header Files\System</Filter>
@@ -229,6 +229,12 @@
     </ClInclude>
     <ClInclude Include="specmapshaderclass.h">
       <Filter>Header Files\ShaderClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="md5model.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="modelclass.h">
+      <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
