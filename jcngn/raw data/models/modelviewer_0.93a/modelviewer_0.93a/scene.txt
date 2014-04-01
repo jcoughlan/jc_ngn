@@ -1,0 +1,77 @@
+basepath "C:\put_your_Doom_directory_here\base"
+
+fullscreen 0
+fullscreenresolution 1024 768
+fullscreenrefresh 60
+
+backgroundcolor 0 0 0 //black background
+lightcolor_a 0.1 0.1 0.1  //some ambient light
+
+
+numlights 2
+
+light 0
+lightpos -30 -60 65  //if no diffuse or specular color is given, it defaults to white
+lightcolor_d 0.9 0.9 0.9
+
+light 1
+lightpos 100 -100 150
+lightcolor_d 0.6 0.6 0.6 //this light's diffuse color
+lightcolor_s 0.6 0.6 0.6 //this light's specular color
+
+
+nummodels 2 //models that are going to be shown have numbers from 0 to nummodels-1
+
+
+model 0
+
+modelname "yourmodel.md5mesh"
+modelanim "yourmodelsanim.md5anim"
+modelpos 0 0 0
+
+model 1
+modelname "data/floor32b.obj"
+modelangle 0
+modelpos 0 0 0
+
+
+
+light 2
+lightpos 0 -82 140
+lightcolor_d .1 0.11 0.1
+lightcolor_s .1 0.1 0.1
+
+light 3
+lightpos 0 -80 143
+lightcolor_d .1 0.1 0.11
+lightcolor_s .1 0.1 0.1
+
+light 4
+lightpos 3 -84 137
+lightcolor_d .1 0.1 0.1
+lightcolor_s .1 0.1 0.1
+
+light 5
+lightpos 3 -82 140
+lightcolor_d .1 0.1 0.1
+lightcolor_s .11 0.1 0.1
+
+light 6
+lightpos 3 -80 143
+lightcolor_d .1 0.1 0.1
+lightcolor_s .1 0.11 0.1
+
+light 7
+lightpos 6 -84 137
+lightcolor_d .1 0.1 0.11
+lightcolor_s .1 0.1 0.11
+
+light 8
+lightpos 6 -82 140
+lightcolor_d .1 0.11 0.1
+lightcolor_s .1 0.1 0.1
+
+light 9
+lightpos 6 -80 143
+lightcolor_d .11 0.1 0.1
+lightcolor_s .1 0.1 0.1
