@@ -82,7 +82,12 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 				     L"../Engine/data/bump01.dds",BUMP_MAP);
 	
 
-	md5Node = new SceneNode("../Engine/data/md5Bob/bob_lamp_update.md5mesh", m_D3D->GetDevice(), LIGHT);
+	md5Node = new SceneNode("../Engine/data/md5Bob/bob_lamp_update_export.md5mesh", m_D3D->GetDevice(), LIGHT);
+	md5Anim = new MD5Anim();
+
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+	std::wstring wfilename = converter.from_bytes("../Engine/data/md5Bob/bob_lamp_update_export.md5anim");
+	md5Anim->LoadMD5Anim(wfilename, md5Node->GetMD5Mesh()->md5Model);
 	//m_sceneNodeList->AddSceneNode(cubeNode);
 	//m_sceneNodeList->AddSceneNode(sphereNode);
 	//m_sceneNodeList->AddSceneNode(planeNode);

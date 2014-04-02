@@ -1,4 +1,8 @@
-
+////////////////////////////////////////////////////////////////////////////////
+// Filename: md5model.h
+////////////////////////////////////////////////////////////////////////////////
+#ifndef _MD5_MODEL_H_
+#define _MD5_MODEL_H_
 
 //Include and link appropriate libraries and headers//
 #pragma comment(lib, "d3d11.lib")
@@ -20,18 +24,15 @@
 #include <D2D1.h>
 #include <sstream>
 #include <dwrite.h>
-#include <dinput.h>
 #include <vector>
 #include <fstream>
 #include <istream>
 #include <iostream>
 
-class MD5Mesh
-{
-public: MD5Mesh();
-		~MD5Mesh();
 
-		struct Vertex
+
+
+struct Vertex
 	{
 		D3DXVECTOR3 position;
 		D3DXVECTOR2 texture;
@@ -73,23 +74,74 @@ public: MD5Mesh();
 	D3DXVECTOR4 orientation;
 	};
 
+	struct ModelAnimation;
+
 	struct Model3D
 	{
 		int numSubsets;
 		int numJoints;
-
+		std::vector<ModelAnimation> animations;
 		std::vector<Joint> joints;
 		std::vector<ModelSubset> subsets;
-	}md5Model;
+	};
+
+
+	struct BoundingBox
+	{
+		XMFLOAT3 min;
+		XMFLOAT3 max;
+	};
+
+	struct FrameData
+	{
+		int frameID;
+		std::vector<float> frameData;
+	};
+	struct AnimJointInfo
+	{
+		std::wstring name;
+		int parentID;
+
+		int flags;
+		int startIndex;
+	};
+
+	struct ModelAnimation
+	{
+		int numFrames;
+		int numJoints;
+		int frameRate;
+		int numAnimatedComponents;
+
+		float frameTime;
+		float totalAnimTime;
+		float currAnimTime;
+
+		std::vector<AnimJointInfo> jointInfo;
+		std::vector<BoundingBox> frameBounds;
+		std::vector<Joint>	baseFrameJoints;
+		std::vector<FrameData>	frameData;
+		std::vector<std::vector<Joint>> frameSkeleton;
+	};
+class MD5Mesh
+{
+public: MD5Mesh();
+		~MD5Mesh();
+
+	
 	ID3D11ShaderResourceView* GetTextureAtIndex(int i);
 
 	bool LoadMD5Model(std::wstring filename, ID3D11Device* m_D3D);
 	bool Render(ID3D11DeviceContext*, int);
 	void RenderBuffers(ID3D11DeviceContext*, int);
+
+	Model3D md5Model;
 private:
 	
-
+	
 	std::vector<ID3D11ShaderResourceView*> meshSRV;
 	std::vector<std::wstring> texFileNameArray;
 
 };
+
+#endif

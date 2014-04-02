@@ -147,6 +147,9 @@
     <ClCompile Include="md5model.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
+    <ClCompile Include="md5anim.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="colorshaderclass.h">
@@ -234,6 +237,9 @@
       <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="modelclass.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="md5anim.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,3 @@
-﻿  graphicsclass.cpp
-c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(71): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(574): warning C4715: 'GraphicsClass::InitializeShaders' : not all control paths return a value
+﻿  md5anim.cpp
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\md5anim.cpp(171): warning C4018: '<' : signed/unsigned mismatch
   jcngn.vcxproj -> C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.exe

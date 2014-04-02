@@ -83,6 +83,8 @@ public:
 		~SceneNode();
 
 		ModelClass* GetModel(){ return model;}
+		MD5Mesh* GetMD5Mesh(){ return md5Mesh;}
+
 		bool Draw(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, MultiTextureShaderClass* multiTextureShader, LightClass* light, CameraClass* camera);
 		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, LightShaderClass*, LightClass*, CameraClass*);
 		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, LightMapShaderClass*, LightClass*, CameraClass*);

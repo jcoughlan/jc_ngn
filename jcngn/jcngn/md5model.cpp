@@ -14,11 +14,9 @@ MD5Mesh::~MD5Mesh()
 }
 
 void MD5Mesh::RenderBuffers(ID3D11DeviceContext* deviceContext,int subset)
-{
-	
+{	
 		unsigned int stride;
 		unsigned int offset;
-
 
 		// Set vertex buffer stride and offset.
 		stride = sizeof(Vertex); 
@@ -32,7 +30,6 @@ void MD5Mesh::RenderBuffers(ID3D11DeviceContext* deviceContext,int subset)
 
 		// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 	
 	return;
 }
@@ -351,6 +348,7 @@ bool MD5Mesh::LoadMD5Model(std::wstring filename, ID3D11Device* m_D3D)
 				for(int i = 0; i < subset.vertices.size(); i++)
 				{
 					subset.vertices[i].position = D3DXVECTOR3(subset.positions[i].x,subset.positions[i].y,subset.positions[i].z);
+					subset.vertices[i].texture = D3DXVECTOR2(subset.positions[i].x,subset.positions[i].y);
 				}
 
 				//*** Calculate vertex normals using normal averaging ***///

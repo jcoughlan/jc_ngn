@@ -46,7 +46,6 @@ SceneNode::SceneNode(string md5_path, ID3D11Device* m_D3D, SHADER_TYPE sh_type)
 	objImporter = 0;
 
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-	std::string narrow = converter.to_bytes(L"foo");
 	std::wstring wfilename = converter.from_bytes(md5_path.c_str());
 	md5Mesh = new MD5Mesh();
 	md5Mesh->LoadMD5Model(wfilename, m_D3D);
