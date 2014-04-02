@@ -1,12 +1,15 @@
-﻿Build started 31/03/2014 22:57:29.
+﻿Build started 02/04/2014 20:49:01.
      1>Project "C:\Users\James\Documents\GitHub\jc_ngn\jcngn\jcngn\jcngn.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\jcngn.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt graphicsclass.cpp
-         graphicsclass.cpp
-     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(71): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
-     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(570): warning C4715: 'GraphicsClass::InitializeShaders' : not all control paths return a value
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt md5model.cpp
+         md5model.cpp
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\md5model.cpp(187): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\md5model.cpp(302): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\md5model.cpp(349): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\md5model.cpp(395): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\james\documents\github\jc_ngn\jcngn\jcngn\md5model.cpp(415): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
@@ -28,6 +31,8 @@
          Debug\lightmapshaderclass.obj
          Debug\lightshaderclass.obj
          Debug\main.obj
+         Debug\md5anim.obj
+         Debug\md5model.obj
          Debug\modelclass.obj
          Debug\multitextureshaderclass.obj
          Debug\OBJImporter.obj
@@ -53,4 +58,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.69
+Time Elapsed 00:00:01.97

@@ -121,6 +121,7 @@ private:
 	int m_vertexCount, m_indexCount;
 	TextureClass* m_Texture;
 	TextureArrayClass* m_TextureArray;
+
 	ModelType* m_model;
 	int* setIndices;
 };

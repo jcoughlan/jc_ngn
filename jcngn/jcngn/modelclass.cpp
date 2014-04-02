@@ -40,7 +40,7 @@ bool ModelClass::InitializeFromTextFile(ID3D11Device* device, char* modelFilenam
 	CalculateModelVectors();
 
 	// Initialize the vertex and index buffers.
-	result = InitializeBuffers(device);
+	InitializeBuffers(device);
 	if(!result)
 	{
 		return false;
@@ -169,7 +169,8 @@ bool ModelClass::InitializePlane(ID3D11Device* device, WCHAR* textureFilename)
 	}
 	
 	SetPlaneVerticesAndIndices();
-
+	// Calculate the normal, tangent, and binormal vectors for the model.
+	CalculateModelVectors();
 	int result = InitializeBuffers(device);
 	if(!result)
 	{
@@ -197,7 +198,8 @@ bool ModelClass::InitializePlane(ID3D11Device* device, WCHAR* textureFilename1, 
 	}
 	
 	SetPlaneVerticesAndIndices();
-
+	// Calculate the normal, tangent, and binormal vectors for the model.
+	CalculateModelVectors();
 	int result = InitializeBuffers(device);
 	if(!result)
 	{
@@ -225,7 +227,8 @@ bool ModelClass::InitializePlane(ID3D11Device* device, WCHAR* textureFilename1, 
 	}
 	
 	SetPlaneVerticesAndIndices();
-
+	// Calculate the normal, tangent, and binormal vectors for the model.
+	CalculateModelVectors();
 	int result = InitializeBuffers(device);
 	if(!result)
 	{

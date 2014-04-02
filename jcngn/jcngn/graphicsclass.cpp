@@ -81,9 +81,17 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	planeNode = new SceneNode( PLANE_MESH, m_D3D->GetDevice(),  L"../Engine/data/stone01.dds", 
 				     L"../Engine/data/bump01.dds",BUMP_MAP);
 	
-	m_sceneNodeList->AddSceneNode(cubeNode);
-	m_sceneNodeList->AddSceneNode(sphereNode);
-	m_sceneNodeList->AddSceneNode(planeNode);	
+
+	md5Node = new SceneNode("../Engine/data/md5Bob/bob_lamp_update_export.md5mesh", m_D3D->GetDevice(), LIGHT);
+	md5Anim = new MD5Anim();
+
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+	std::wstring wfilename = converter.from_bytes("../Engine/data/md5Bob/bob_lamp_update_export.md5anim");
+	md5Anim->LoadMD5Anim(wfilename, md5Node->GetMD5Mesh()->md5Model);
+	//m_sceneNodeList->AddSceneNode(cubeNode);
+	//m_sceneNodeList->AddSceneNode(sphereNode);
+	//m_sceneNodeList->AddSceneNode(planeNode);
+	m_sceneNodeList->AddSceneNode(md5Node);
 
 	// Initialize the light object.
 	m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
@@ -255,6 +263,7 @@ bool GraphicsClass::DrawPerspective()
 	planeNode->setScale(2.0,2.0,2.0);
 	planeNode->setTranslation(0,-2,0);
 
+	md5Node->setScale(1,1,1);
 	m_sceneNodeList->Sort();
 
 	m_sceneNodeList->DrawAll(m_D3D->GetDeviceContext(),worldMatrix, viewMatrix, projectionMatrix,  m_Camera);
@@ -321,7 +330,7 @@ bool GraphicsClass::Frame(int fps, int cpu, float frameTime)
 	static float rotation = 0.0f;
 	
 	// Clear the buffers to begin the scene.
-	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+	m_D3D->BeginScene(0.5f, 0.5f, 0.5f, 1.0f);
 	
 	
 	// Render the perspective scene scene.

@@ -9,6 +9,7 @@ SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* textureLoc, SH
 	scenenode_type = OBJ_MESH;
 	shader_type = sh_type;
 	model = 0;	
+	md5Mesh = 0;
 	objImporter = 0;
 	objImporter = new OBJImporter();
 	objTxtPath =objImporter->ObjToTextFile((char*)obj_path.c_str());
@@ -36,11 +37,33 @@ SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* textureLoc, SH
 		renderSceneNode = true;
 }
 
+SceneNode::SceneNode(string md5_path, ID3D11Device* m_D3D, SHADER_TYPE sh_type)
+{
+	shader_type = sh_type;
+	scenenode_type = MD5_MESH;
+	model = 0;	
+	md5Mesh = 0;
+	objImporter = 0;
+
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+	std::wstring wfilename = converter.from_bytes(md5_path.c_str());
+	md5Mesh = new MD5Mesh();
+	md5Mesh->LoadMD5Model(wfilename, m_D3D);
+
+
+	D3DXMatrixTranslation(&translationMatrix,0.0f, 0.0f, 0.0f);
+	D3DXMatrixRotationX(&rotationMatrixX, 0.f);
+	D3DXMatrixRotationY(&rotationMatrixY, 0.f);
+	D3DXMatrixRotationZ(&rotationMatrixZ, 0.f);
+	D3DXMatrixScaling(&scalingMatrix, 1.0f, 1.0f, 1.0f);
+}
+
 SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* textureLoc1, WCHAR* textureLoc2, SHADER_TYPE sh_type)
 {
 	shader_type = sh_type;
 	scenenode_type = OBJ_MESH;
 	model = 0;	
+	md5Mesh = 0;
 	objImporter = 0;
 	objImporter = new OBJImporter();
 	objTxtPath =objImporter->ObjToTextFile((char*)obj_path.c_str());
@@ -73,6 +96,7 @@ SceneNode::SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* textureLoc1, W
 	shader_type = sh_type;
 	scenenode_type = OBJ_MESH;
 	model = 0;	
+	md5Mesh = 0;
 	objImporter = 0;
 	objImporter = new OBJImporter();
 	objTxtPath =objImporter->ObjToTextFile((char*)obj_path.c_str());
@@ -104,6 +128,7 @@ SceneNode::SceneNode(SCENENODE_TYPE type, ID3D11Device* m_D3D , WCHAR* textureLo
 	scenenode_type = type;
 	shader_type = sh_type;
 	model = 0;	
+	md5Mesh = 0;
 	objImporter = 0;
 
 	model = new ModelClass;
@@ -141,6 +166,7 @@ SceneNode::SceneNode(SCENENODE_TYPE type, ID3D11Device* m_D3D , WCHAR* textureLo
 	scenenode_type = type;
 	shader_type = sh_type;
 	model = 0;	
+	md5Mesh = 0;
 	objImporter = 0;
 
 	model = new ModelClass;
@@ -347,3 +373,41 @@ bool SceneNode::Draw(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix,
 				camera->GetPosition(), light->GetSpecularColor(), light->GetSpecularPower());
 	return result;
 }
+
+bool SceneNode::DrawMD5(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, LightShaderClass* lightShader, LightClass* light, CameraClass* camera)
+{
+	D3DXMATRIX modelMatrix = ( rotationMatrixX * rotationMatrixY * rotationMatrixZ *translationMatrix* scalingMatrix);
+		worldMatrix = modelMatrix*worldMatrix;
+	for (int i = 0; i < md5Mesh->md5Model.numSubsets; i++)
+	{
+		md5Mesh->Render(deviceContext, i);
+
+		
+		// Render the model using the light shader.
+		bool result = lightShader->Render(deviceContext, md5Mesh->md5Model.subsets.at(i).indices.size(), worldMatrix, viewMatrix, projectionMatrix, 
+			md5Mesh->GetTextureAtIndex(md5Mesh->md5Model.subsets.at(i).texArrayIndex), light->GetDirection(), light->GetAmbientColor(), light->GetDiffuseColor(), 
+						   camera->GetPosition(), light->GetSpecularColor(), light->GetSpecularPower());
+	
+	}
+	return true;
+}
+
+
+
+bool SceneNode::DrawMD5(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, TextureShaderClass* textureShader, LightClass* light, CameraClass* camera)
+{
+	D3DXMATRIX modelMatrix = ( rotationMatrixX * rotationMatrixY * rotationMatrixZ *translationMatrix* scalingMatrix);
+		worldMatrix = modelMatrix*worldMatrix;
+	for (int i = 0; i < md5Mesh->md5Model.numSubsets; i++)
+	{
+		md5Mesh->Render(deviceContext, i);
+
+		
+		// Render the model using the light shader.
+		bool result = textureShader->Render(deviceContext, md5Mesh->md5Model.subsets.at(i).indices.size(), worldMatrix, viewMatrix, projectionMatrix, 
+			md5Mesh->GetTextureAtIndex(md5Mesh->md5Model.subsets.at(i).texArrayIndex));
+	
+	}
+	return true;
+}
+

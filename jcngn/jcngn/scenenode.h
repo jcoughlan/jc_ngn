@@ -29,6 +29,7 @@
 ///////////////////////
 #include "OBJImporter.h"
 #include "modelclass.h"
+#include "md5model.h"
 #include "lightclass.h"
 #include "cameraclass.h"
 #include "lightshaderclass.h"
@@ -40,6 +41,7 @@
 #include "bumpmapshaderclass.h"
 #include "specmapshaderclass.h"
 #include <d3d11.h>
+#include <codecvt>
 #include <d3dx10math.h>
 /////////////////////////
 // FUNCTION PROTOTYPES //
@@ -50,6 +52,7 @@ enum SCENENODE_TYPE
 	TRIANGLE_MESH,
 	PLANE_MESH,
 	OBJ_MESH,
+	MD5_MESH,
 	UNKNOWN
 }; 
 
@@ -71,6 +74,7 @@ class SceneNode
 {
 public: 
 		SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR*, SHADER_TYPE );
+		SceneNode(string md5_path, ID3D11Device* m_D3D, SHADER_TYPE );
 		SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* ,  WCHAR*,SHADER_TYPE );
 		SceneNode(string obj_path, ID3D11Device* m_D3D, WCHAR* ,  WCHAR*, WCHAR*, SHADER_TYPE );
 		SceneNode(SCENENODE_TYPE, ID3D11Device* m_D3D, WCHAR*,SHADER_TYPE);
@@ -79,6 +83,8 @@ public:
 		~SceneNode();
 
 		ModelClass* GetModel(){ return model;}
+		MD5Mesh* GetMD5Mesh(){ return md5Mesh;}
+
 		bool Draw(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, MultiTextureShaderClass* multiTextureShader, LightClass* light, CameraClass* camera);
 		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, LightShaderClass*, LightClass*, CameraClass*);
 		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, LightMapShaderClass*, LightClass*, CameraClass*);
@@ -87,7 +93,9 @@ public:
 		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, AlphaMapShaderClass*, LightClass*, CameraClass*);
 		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, BumpMapShaderClass*, LightClass*, CameraClass*);
 		bool Draw(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX,  D3DXMATRIX, SpecMapShaderClass*, LightClass*, CameraClass*);
-		
+		bool DrawMD5(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, TextureShaderClass* textureClass, LightClass* light, CameraClass* camera);
+		bool DrawMD5(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix,  D3DXMATRIX projectionMatrix, LightShaderClass* lightShader, LightClass* light, CameraClass* camera);
+
 		void setTranslation(float x, float y, float z);
 		void setRotationX(float angle);
 		void setRotationY(float angle);
@@ -98,12 +106,14 @@ public:
 		void getScale(float &x, float &y, float&z);
 		bool getRenderSceneNode() { return renderSceneNode;}
 		SHADER_TYPE getShaderType() {return shader_type;}
+		SCENENODE_TYPE getSceneNodeType() {return scenenode_type;}
 	
 private:
 	string objTxtPath;
 	ModelClass* model;
 	OBJImporter* objImporter;
 	SCENENODE_TYPE scenenode_type;
+	MD5Mesh* md5Mesh;
 	bool renderSceneNode;
 	D3DXMATRIX translationMatrix;
 	D3DXMATRIX rotationMatrixX;
