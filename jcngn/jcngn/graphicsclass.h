@@ -36,6 +36,7 @@
 #include "lightshaderclass.h"
 #include "lightclass.h"
 #include "OBJImporter.h"
+#include "md5anim.h"
 #include "scenenode.h"
 #include "inputclass.h"
 #include "textclass.h"
@@ -46,7 +47,6 @@
 #include "alphamapshaderclass.h"
 #include "bumpmapshaderclass.h"
 #include "specmapshaderclass.h"
-#include "md5anim.h"
 #include <Windows.h>
 #include <iostream>
 #include <string>
@@ -89,8 +89,6 @@ private:
 	SceneNode* cubeNode;
 	SceneNode* planeNode;
 	SceneNode* sphereNode;
-	SceneNode* md5Node;
-	MD5Anim* md5Anim;
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;
 	BitmapClass* m_Bitmap;
@@ -103,6 +101,9 @@ private:
 	BumpMapShaderClass* m_BumpMapShader;
 	AlphaMapShaderClass* m_AlphaMapShader;
 	SpecMapShaderClass* m_SpecMapShader;
+
+	SceneNode* md5Node;
+	MD5Anim* md5Anim;
 };
 
 #endif

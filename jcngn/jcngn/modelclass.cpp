@@ -40,7 +40,7 @@ bool ModelClass::InitializeFromTextFile(ID3D11Device* device, char* modelFilenam
 	CalculateModelVectors();
 
 	// Initialize the vertex and index buffers.
-	InitializeBuffers(device);
+	result = InitializeBuffers(device);
 	if(!result)
 	{
 		return false;
@@ -399,7 +399,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	}
 
 	// Set up the description of the static vertex buffer.
-	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+    vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
     vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
     vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vertexBufferDesc.CPUAccessFlags = 0;

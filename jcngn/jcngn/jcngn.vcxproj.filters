@@ -144,10 +144,10 @@
     <ClCompile Include="specmapshaderclass.cpp">
       <Filter>Source Files\ShaderClasses</Filter>
     </ClCompile>
-    <ClCompile Include="md5model.cpp">
+    <ClCompile Include="md5anim.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
-    <ClCompile Include="md5anim.cpp">
+    <ClCompile Include="md5model.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
   </ItemGroup>
@@ -173,6 +173,9 @@
     <ClInclude Include="textureclass.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="modelclass.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
     <ClInclude Include="inputclass.h">
       <Filter>Header Files\System</Filter>
     </ClInclude>
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="graphicsclass.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scenenode.h">
+      <Filter>Header Files\SceneNodes</Filter>
     </ClInclude>
     <ClInclude Include="fontclass.h">
       <Filter>Header Files\Graphics</Filter>
@@ -230,17 +236,11 @@
     <ClInclude Include="specmapshaderclass.h">
       <Filter>Header Files\ShaderClasses</Filter>
     </ClInclude>
-    <ClInclude Include="md5model.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="modelclass.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="md5anim.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="scenenode.h">
-      <Filter>Header Files\SceneNodes</Filter>
+    <ClInclude Include="md5model.h">
+      <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

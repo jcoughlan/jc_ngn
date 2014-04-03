@@ -410,4 +410,3 @@ bool SceneNode::DrawMD5(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatr
 	}
 	return true;
 }
-
