@@ -323,6 +323,8 @@ bool GraphicsClass::DrawOrthographic(int fps, int cpu)
 	m_D3D->TurnOffAlphaBlending();
 	// Turn the Z buffer back on now that all 2D rendering has completed.
 	m_D3D->TurnZBufferOn();
+
+	
 	return true;
 }
 
@@ -330,10 +332,16 @@ bool GraphicsClass::Frame(int fps, int cpu, float frameTime)
 {
 	bool result;
 	static float rotation = 0.0f;
-	
+
 	// Clear the buffers to begin the scene.
-	m_D3D->BeginScene(0.5f, 0.5f, 0.5f, 1.0f);
+	m_D3D->BeginScene(0.f, 0.f, 0.f, 1.0f);
 	// Render the perspective scene scene.
+
+	result = DrawOrthographic(fps, cpu);
+	if(!result)
+	{
+		return false;
+	}
 	result = DrawPerspective();
 	if(!result)
 	{
@@ -341,15 +349,13 @@ bool GraphicsClass::Frame(int fps, int cpu, float frameTime)
 	}
 
 
-	result = DrawOrthographic(fps, cpu);
-	if(!result)
-	{
-		return false;
-	}
-
+	
+	md5Anim->UpdateMD5Model(md5Node->GetMD5Mesh()->md5Model, frameTime/600, 0, m_D3D->GetDeviceContext());
+	
 
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();
+
 	return true;
 }
 

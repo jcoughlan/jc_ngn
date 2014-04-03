@@ -58,7 +58,7 @@ void SceneNodeList::DrawAll(ID3D11DeviceContext* deviceContext, D3DXMATRIX world
 				switch (sceneNodes.at(i)->getShaderType())
 				{
 					case TEXTURE:if (textureShader)sceneNodes.at(i)->DrawMD5(deviceContext,worldMatrix, viewMatrix, projectionMatrix, textureShader, light, camera); break;
-					case LIGHT: if (lightShader&&light)sceneNodes.at(i)->DrawMD5(deviceContext,worldMatrix, viewMatrix, projectionMatrix, lightShader, light, camera); break;
+					case LIGHT: if (lightShader&&light)sceneNodes.at(i)->DrawMD5(deviceContext,worldMatrix, viewMatrix, projectionMatrix, lightShader, light, camera); break	;				
 				}
 			}
 			else
@@ -98,7 +98,7 @@ bool SceneNodeList::TestAgainstFrustum(SceneNode* sceneNode)
 
 	renderModel = frustum->CheckSphere(posX, posY, posZ, radius);
 		if (!renderModel)
-			return true;
+			return false;
 	}
 
 	return true;

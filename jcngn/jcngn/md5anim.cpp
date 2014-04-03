@@ -50,15 +50,14 @@ void MD5Anim::UpdateMD5Model(Model3D& MD5Model, float deltaTime, int animation, 
 		tempJoint.pos.y = joint0.pos.y + (interpolation * (joint1.pos.y - joint0.pos.y));
 		tempJoint.pos.z = joint0.pos.z + (interpolation * (joint1.pos.z - joint0.pos.z));
 
-		XMVECTOR temp =XMVECTOR( XMQuaternionSlerp(joint0Orient, joint1Orient, interpolation));
 		// Interpolate orientations using spherical interpolation (Slerp)
-		//tempJoint.orientation.x  = temp.
-		XMFLOAT4 tmp = XMFLOAT4(0,0,0, 0);
-		XMStoreFloat4(&tmp, XMQuaternionSlerp(joint0Orient, joint1Orient, interpolation));
-		tempJoint.orientation.x = tmp.x;
-		tempJoint.orientation.y = tmp.y;
-		tempJoint.orientation.z = tmp.z;
-		tempJoint.orientation.w = tmp.w;
+
+		XMFLOAT4 tempOrientation = XMFLOAT4(0.0,0.0,0.0,0.0);
+		XMStoreFloat4(&tempOrientation, XMQuaternionSlerp(joint0Orient, joint1Orient, interpolation));
+		tempJoint.orientation.x = tempOrientation.x;
+		tempJoint.orientation.y = tempOrientation.y;
+		tempJoint.orientation.z = tempOrientation.z;
+		tempJoint.orientation.w = tempOrientation.w;
 
 		interpolatedSkeleton.push_back(tempJoint);		// Push the joint back into our interpolated skeleton
 	}
@@ -96,7 +95,7 @@ void MD5Anim::UpdateMD5Model(Model3D& MD5Model, float deltaTime, int animation, 
 
 				// Compute the normals for this frames skeleton using the weight normals from before
 				// We can comput the normals the same way we compute the vertices position, only we don't have to translate them (just rotate)
-				XMVECTOR tempWeightNormal = XMVectorSet(tempWeight.pos.x, tempWeight.pos.y, tempWeight.pos.z, 0.0f);
+				XMVECTOR tempWeightNormal = XMVectorSet(tempWeight.normal.x, tempWeight.normal.y, tempWeight.normal.z, 0.0f);
 
 				// Rotate the normal
 				XMStoreFloat3(&rotatedPoint, XMQuaternionMultiply(XMQuaternionMultiply(tempJointOrientation, tempWeightNormal), tempJointOrientationConjugate));
@@ -110,12 +109,13 @@ void MD5Anim::UpdateMD5Model(Model3D& MD5Model, float deltaTime, int animation, 
 			MD5Model.subsets[k].positions[i] = tempVert.position;				// Store the vertices position in the position vector instead of straight into the vertex vector
 			MD5Model.subsets[k].vertices[i].normal = tempVert.normal;		// Store the vertices normal
 			
+			XMFLOAT3 tempNormals = D3DXVECTOR3(0.0,0.0,0.0);
+			XMFLOAT3 otherNormals = XMFLOAT3(MD5Model.subsets[k].vertices[i].normal.x, MD5Model.subsets[k].vertices[i].normal.y, MD5Model.subsets[k].vertices[i].normal.z);
+			XMStoreFloat3(&tempNormals, XMVector3Normalize(XMLoadFloat3(&otherNormals)));
+			MD5Model.subsets[k].vertices[i].normal.x = tempNormals.x;
+			MD5Model.subsets[k].vertices[i].normal.y = tempNormals.y;
+			MD5Model.subsets[k].vertices[i].normal.z = tempNormals.z;
 
-			XMFLOAT3 temp = XMFLOAT3(MD5Model.subsets[k].vertices[i].normal.x, MD5Model.subsets[k].vertices[i].normal.y, MD5Model.subsets[k].vertices[i].normal.z);
-			XMVector3Normalize(XMLoadFloat3(&temp));
-			MD5Model.subsets[k].vertices[i].normal.x =  temp.x;
-			MD5Model.subsets[k].vertices[i].normal.y =  temp.y;
-			MD5Model.subsets[k].vertices[i].normal.z =  temp.z;
 		}
 
 		// Put the positions into the vertices for this subset
@@ -130,7 +130,7 @@ void MD5Anim::UpdateMD5Model(Model3D& MD5Model, float deltaTime, int animation, 
 		deviceContext->Map(MD5Model.subsets[k].vertBuff, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedVertBuff);
 
 		// Copy the data into the vertex buffer.
-		memcpy(&mappedVertBuff, &MD5Model.subsets[k].vertices[0], (sizeof(Vertex) * MD5Model.subsets[k].vertices.size()));
+		memcpy(mappedVertBuff.pData, &MD5Model.subsets[k].vertices[0], (sizeof(Vertex) * MD5Model.subsets[k].vertices.size()));
 
 		deviceContext->Unmap(MD5Model.subsets[k].vertBuff, 0);
 

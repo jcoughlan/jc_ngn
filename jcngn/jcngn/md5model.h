@@ -48,6 +48,7 @@ struct Vertex
 		int jointID;
 		float bias;
 		XMFLOAT3 pos;
+		D3DXVECTOR3 normal;
 	};
 
 	struct ModelSubset

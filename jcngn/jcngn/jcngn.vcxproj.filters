@@ -185,9 +185,6 @@
     <ClInclude Include="graphicsclass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scenenode.h">
-      <Filter>Header Files\SceneNodes</Filter>
-    </ClInclude>
     <ClInclude Include="fontclass.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -241,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="md5anim.h">
       <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="scenenode.h">
+      <Filter>Header Files\SceneNodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
