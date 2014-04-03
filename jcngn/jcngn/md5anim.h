@@ -28,7 +28,7 @@ class MD5Anim
 public:
 	MD5Anim();
 	~MD5Anim();
-
+	void UpdateMD5Model(Model3D& MD5Model, float deltaTime, int animation, ID3D11DeviceContext* deviceContext);
 	bool LoadMD5Anim(std::wstring filename,	Model3D& MD5Model);
 private:
 	

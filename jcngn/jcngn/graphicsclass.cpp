@@ -238,6 +238,8 @@ void GraphicsClass::Shutdown()
 	return;
 }
 
+
+
 bool GraphicsClass::DrawPerspective()
 {
 	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix;
@@ -267,6 +269,7 @@ bool GraphicsClass::DrawPerspective()
 	m_sceneNodeList->Sort();
 
 	m_sceneNodeList->DrawAll(m_D3D->GetDeviceContext(),worldMatrix, viewMatrix, projectionMatrix,  m_Camera);
+	
 	
 	return true;
 
@@ -323,7 +326,6 @@ bool GraphicsClass::DrawOrthographic(int fps, int cpu)
 	return true;
 }
 
-
 bool GraphicsClass::Frame(int fps, int cpu, float frameTime)
 {
 	bool result;
@@ -331,8 +333,6 @@ bool GraphicsClass::Frame(int fps, int cpu, float frameTime)
 	
 	// Clear the buffers to begin the scene.
 	m_D3D->BeginScene(0.5f, 0.5f, 0.5f, 1.0f);
-	
-	
 	// Render the perspective scene scene.
 	result = DrawPerspective();
 	if(!result)

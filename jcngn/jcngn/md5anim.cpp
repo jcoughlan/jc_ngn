@@ -12,6 +12,138 @@ MD5Anim::~MD5Anim()
 }
 
 
+void MD5Anim::UpdateMD5Model(Model3D& MD5Model, float deltaTime, int animation, ID3D11DeviceContext* deviceContext)
+{
+	MD5Model.animations[animation].currAnimTime += deltaTime;			// Update the current animation time
+
+	if(MD5Model.animations[animation].currAnimTime > MD5Model.animations[animation].totalAnimTime)
+		MD5Model.animations[animation].currAnimTime = 0.0f;
+
+	// Which frame are we on
+	float currentFrame = MD5Model.animations[animation].currAnimTime * MD5Model.animations[animation].frameRate;	
+	int frame0 = floorf( currentFrame );
+	int frame1 = frame0 + 1;
+
+	// Make sure we don't go over the number of frames	
+	if(frame0 == MD5Model.animations[animation].numFrames-1)
+		frame1 = 0;
+
+	float interpolation = currentFrame - frame0;	// Get the remainder (in time) between frame0 and frame1 to use as interpolation factor
+
+	std::vector<Joint> interpolatedSkeleton;		// Create a frame skeleton to store the interpolated skeletons in
+
+	// Compute the interpolated skeleton
+	for( int i = 0; i < MD5Model.animations[animation].numJoints; i++)
+	{
+		Joint tempJoint;
+		Joint joint0 = MD5Model.animations[animation].frameSkeleton[frame0][i];		// Get the i'th joint of frame0's skeleton
+		Joint joint1 = MD5Model.animations[animation].frameSkeleton[frame1][i];		// Get the i'th joint of frame1's skeleton
+
+		tempJoint.parentID = joint0.parentID;											// Set the tempJoints parent id
+
+		// Turn the two quaternions into XMVECTORs for easy computations
+		XMVECTOR joint0Orient = XMVectorSet(joint0.orientation.x, joint0.orientation.y, joint0.orientation.z, joint0.orientation.w);
+		XMVECTOR joint1Orient = XMVectorSet(joint1.orientation.x, joint1.orientation.y, joint1.orientation.z, joint1.orientation.w);
+
+		// Interpolate positions
+		tempJoint.pos.x = joint0.pos.x + (interpolation * (joint1.pos.x - joint0.pos.x));
+		tempJoint.pos.y = joint0.pos.y + (interpolation * (joint1.pos.y - joint0.pos.y));
+		tempJoint.pos.z = joint0.pos.z + (interpolation * (joint1.pos.z - joint0.pos.z));
+
+		XMVECTOR temp =XMVECTOR( XMQuaternionSlerp(joint0Orient, joint1Orient, interpolation));
+		// Interpolate orientations using spherical interpolation (Slerp)
+		//tempJoint.orientation.x  = temp.
+		XMFLOAT4 tmp = XMFLOAT4(0,0,0, 0);
+		XMStoreFloat4(&tmp, XMQuaternionSlerp(joint0Orient, joint1Orient, interpolation));
+		tempJoint.orientation.x = tmp.x;
+		tempJoint.orientation.y = tmp.y;
+		tempJoint.orientation.z = tmp.z;
+		tempJoint.orientation.w = tmp.w;
+
+		interpolatedSkeleton.push_back(tempJoint);		// Push the joint back into our interpolated skeleton
+	}
+
+	for ( int k = 0; k < MD5Model.numSubsets; k++)
+	{
+		for ( int i = 0; i < MD5Model.subsets[k].vertices.size(); ++i )
+		{
+			Vertex tempVert = MD5Model.subsets[k].vertices[i];
+			tempVert.position = D3DXVECTOR3(0, 0, 0);	// Make sure the vertex's pos is cleared first
+			tempVert.normal = D3DXVECTOR3(0,0,0);	// Clear vertices normal
+
+			// Sum up the joints and weights information to get vertex's position and normal
+			for ( int j = 0; j < tempVert.WeightCount; ++j )
+			{
+				Weight tempWeight = MD5Model.subsets[k].weights[tempVert.StartWeight + j];
+				Joint tempJoint = interpolatedSkeleton[tempWeight.jointID];
+
+				// Convert joint orientation and weight pos to vectors for easier computation
+				XMVECTOR tempJointOrientation = XMVectorSet(tempJoint.orientation.x, tempJoint.orientation.y, tempJoint.orientation.z, tempJoint.orientation.w);
+				XMVECTOR tempWeightPos = XMVectorSet(tempWeight.pos.x, tempWeight.pos.y, tempWeight.pos.z, 0.0f);
+
+				// We will need to use the conjugate of the joint orientation quaternion
+				XMVECTOR tempJointOrientationConjugate = XMQuaternionInverse(tempJointOrientation);
+
+				// Calculate vertex position (in joint space, eg. rotate the point around (0,0,0)) for this weight using the joint orientation quaternion and its conjugate
+				// We can rotate a point using a quaternion with the equation "rotatedPoint = quaternion * point * quaternionConjugate"
+				XMFLOAT3 rotatedPoint;
+				XMStoreFloat3(&rotatedPoint, XMQuaternionMultiply(XMQuaternionMultiply(tempJointOrientation, tempWeightPos), tempJointOrientationConjugate));
+
+				// Now move the verices position from joint space (0,0,0) to the joints position in world space, taking the weights bias into account
+				tempVert.position.x += ( tempJoint.pos.x + rotatedPoint.x ) * tempWeight.bias;
+				tempVert.position.y += ( tempJoint.pos.y + rotatedPoint.y ) * tempWeight.bias;
+				tempVert.position.z += ( tempJoint.pos.z + rotatedPoint.z ) * tempWeight.bias;
+
+				// Compute the normals for this frames skeleton using the weight normals from before
+				// We can comput the normals the same way we compute the vertices position, only we don't have to translate them (just rotate)
+				XMVECTOR tempWeightNormal = XMVectorSet(tempWeight.pos.x, tempWeight.pos.y, tempWeight.pos.z, 0.0f);
+
+				// Rotate the normal
+				XMStoreFloat3(&rotatedPoint, XMQuaternionMultiply(XMQuaternionMultiply(tempJointOrientation, tempWeightNormal), tempJointOrientationConjugate));
+
+				// Add to vertices normal and ake weight bias into account
+				tempVert.normal.x -= rotatedPoint.x * tempWeight.bias;
+				tempVert.normal.y -= rotatedPoint.y * tempWeight.bias;
+				tempVert.normal.z -= rotatedPoint.z * tempWeight.bias;
+			}
+
+			MD5Model.subsets[k].positions[i] = tempVert.position;				// Store the vertices position in the position vector instead of straight into the vertex vector
+			MD5Model.subsets[k].vertices[i].normal = tempVert.normal;		// Store the vertices normal
+			
+
+			XMFLOAT3 temp = XMFLOAT3(MD5Model.subsets[k].vertices[i].normal.x, MD5Model.subsets[k].vertices[i].normal.y, MD5Model.subsets[k].vertices[i].normal.z);
+			XMVector3Normalize(XMLoadFloat3(&temp));
+			MD5Model.subsets[k].vertices[i].normal.x =  temp.x;
+			MD5Model.subsets[k].vertices[i].normal.y =  temp.y;
+			MD5Model.subsets[k].vertices[i].normal.z =  temp.z;
+		}
+
+		// Put the positions into the vertices for this subset
+		for(int i = 0; i < MD5Model.subsets[k].vertices.size(); i++)
+		{
+			MD5Model.subsets[k].vertices[i].position = MD5Model.subsets[k].positions[i];
+		}
+
+		// Update the subsets vertex buffer
+		// First lock the buffer
+		D3D11_MAPPED_SUBRESOURCE mappedVertBuff;
+		deviceContext->Map(MD5Model.subsets[k].vertBuff, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedVertBuff);
+
+		// Copy the data into the vertex buffer.
+		memcpy(&mappedVertBuff, &MD5Model.subsets[k].vertices[0], (sizeof(Vertex) * MD5Model.subsets[k].vertices.size()));
+
+		deviceContext->Unmap(MD5Model.subsets[k].vertBuff, 0);
+
+		// The line below is another way to update a buffer. You will use this when you want to update a buffer less
+		// than once per frame, since the GPU reads will be faster (the buffer was created as a DEFAULT buffer instead
+		// of a DYNAMIC buffer), and the CPU writes will be slower. You can try both methods to find out which one is faster
+		// for you. if you want to use the line below, you will have to create the buffer with D3D11_USAGE_DEFAULT instead
+		// of D3D11_USAGE_DYNAMIC
+		//d3d11DevCon->UpdateSubresource( MD5Model.subsets[k].vertBuff, 0, NULL, &MD5Model.subsets[k].vertices[0], 0, 0 );
+	}
+}
+
+
 
 bool MD5Anim::LoadMD5Anim(std::wstring filename,	Model3D& MD5Model)
 {	
