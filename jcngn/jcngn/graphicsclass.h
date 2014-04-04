@@ -102,6 +102,7 @@ private:
 	AlphaMapShaderClass* m_AlphaMapShader;
 	SpecMapShaderClass* m_SpecMapShader;
 
+	SceneNode* lightIndicatorNode;
 	SceneNode* md5Node;
 	MD5Anim* md5Anim;
 };

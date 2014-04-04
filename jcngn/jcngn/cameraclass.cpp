@@ -37,7 +37,8 @@ void CameraClass::SetPitch(float pitch)
 {
 	cam_pitch= pitch;
 	cam_pitch = min ( cam_pitch , 90.0f );
-	cam_pitch = max ( cam_pitch , -90.0f );
+	cam_pitch = max ( cam_pitch , -90.0f );
+
 }
 
 void CameraClass::SetYaw(float yaw)
@@ -48,7 +49,8 @@ void CameraClass::SetYaw(float yaw)
  }
  if( cam_yaw > 360.0f ) {
 	cam_yaw -= 360.0f ;
- }
+ }
+
 }
 
 

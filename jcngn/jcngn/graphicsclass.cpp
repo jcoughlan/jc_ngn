@@ -25,6 +25,7 @@ GraphicsClass::GraphicsClass()
 	m_SpecMapShader = 0;
 	md5Node = 0;
 	md5Anim = 0;
+	lightIndicatorNode = 0;
 }
 
 
@@ -74,14 +75,14 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	// Set the initial position of the camera.
 
-	m_Camera->SetPosition(0.0f, 3.0f, -10.0f);
+	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
 	cubeNode = new SceneNode("../Engine/data/cube.obj", m_D3D->GetDevice(),    L"../Engine/data/stone02.dds", 
 				     L"../Engine/data/bump02.dds", L"../Engine/data/spec02.dds", SPEC_MAP);
 
 	sphereNode = new SceneNode("../Engine/data/sphere.obj", m_D3D->GetDevice(),  L"../Engine/data/stone01.dds", LIGHT);
+	lightIndicatorNode = new SceneNode("../Engine/data/sphere.obj", m_D3D->GetDevice(),  L"../Engine/data/bump01.dds",TEXTURE);
 
-	planeNode = new SceneNode( PLANE_MESH, m_D3D->GetDevice(),  L"../Engine/data/stone01.dds", 
-				     L"../Engine/data/bump01.dds",BUMP_MAP);
+	planeNode = new SceneNode( PLANE_MESH, m_D3D->GetDevice(), L"../Engine/data/stone02.dds",L"../Engine/data/bump01.dds",BUMP_MAP);
 	
 	md5Node = new SceneNode("../Engine/data/md5Bob/bob_lamp_update_export.md5mesh", m_D3D->GetDevice(), LIGHT);
 	md5Anim = new MD5Anim();
@@ -93,14 +94,22 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_sceneNodeList->AddSceneNode(sphereNode);
 	m_sceneNodeList->AddSceneNode(planeNode);
 	m_sceneNodeList->AddSceneNode(md5Node);	
+	m_sceneNodeList->AddSceneNode(lightIndicatorNode);	
 
+	
+
+	md5Node->setScale(0.3,0.3,0.3);
+	md5Node->setTranslation(0,-1,2);
 	// Initialize the light object.
 	m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->SetDirection(0.0f, 0.2f, 1.0f);
+	m_Light->SetDirection(0.3f, 0.3f, .3f);
 	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
 	//lower = stronger
 	m_Light->SetSpecularPower(20.f);
+	
+//	lightIndicatorNode->setTranslation(m_Light->GetPosition().x,m_Camera->GetPosition().y, m_Camera->GetPosition().z);
+	lightIndicatorNode->setScale(0.05,0.05,0.05);
 
 	lastMousePos[0] = 0.0;
 	lastMousePos[1] = 0.0;
@@ -115,6 +124,14 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_sceneNodeList->SetLightShader(m_LightShader);
 	m_sceneNodeList->SetMultiTextureShader(m_MultiTextureShader);
 	m_sceneNodeList->SetAlphaMapShader(m_AlphaMapShader);
+
+	
+	sphereNode->setTranslation(0,1,2);
+	cubeNode->setTranslation(0,-1,-3);
+	cubeNode->setRotationY((float)(45 * DEG_2_RAD));
+	planeNode->setRotationX((float)(90 * DEG_2_RAD));
+	planeNode->setScale(2.0,2.0,2.0);
+	planeNode->setTranslation(0,-1,0);
 	return true;
 }
 
@@ -257,12 +274,6 @@ bool GraphicsClass::DrawPerspective()
 	m_sceneNodeList->SetFrustum(m_Frustum);
 	// Draw our meshes	
 		
-	sphereNode->setTranslation(0,1,2);
-	cubeNode->setTranslation(0,-1,0);
-
-	planeNode->setRotationX((float)(90 * DEG_2_RAD));
-	planeNode->setScale(2.0,2.0,2.0);
-	planeNode->setTranslation(0,-2,0);
 
 	m_sceneNodeList->Sort();
 
@@ -273,8 +284,7 @@ bool GraphicsClass::DrawPerspective()
 }
 
 bool GraphicsClass::DrawOrthographic(int fps, int cpu)
-{
-	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix;
+{D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix;
 	bool result;
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_D3D->GetWorldMatrix(worldMatrix);
@@ -302,6 +312,8 @@ bool GraphicsClass::DrawOrthographic(int fps, int cpu)
 	{
 		return false;
 	}
+
+
 	// Put the bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	/*result = m_Bitmap->Render(m_D3D->GetDeviceContext(), 100, 100);
 	if(!result)
@@ -333,6 +345,11 @@ bool GraphicsClass::Frame(int fps, int cpu, float frameTime)
 	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 	
 	
+	result = DrawOrthographic(fps, cpu);
+	if(!result)
+	{
+		return false;
+	}
 	// Render the perspective scene scene.
 	result = DrawPerspective();
 	if(!result)
@@ -341,11 +358,6 @@ bool GraphicsClass::Frame(int fps, int cpu, float frameTime)
 	}
 
 
-	result = DrawOrthographic(fps, cpu);
-	if(!result)
-	{
-		return false;
-	}
 
 	md5Anim->UpdateMD5Model(md5Node->GetMD5Mesh()->md5Model, frameTime/600, 0, m_D3D->GetDeviceContext());
 
@@ -395,7 +407,7 @@ bool GraphicsClass::HandleKeyboardInput(unsigned int keyIndex){
 	float otherPosY = offset * -sinf( pitchRadian );
 	float otherPosZ = offset *  cosf( yawRadian ) * cosf( pitchRadian );	
 
-
+	float x, y, z = 0;  sphereNode->getTranslation(x,y,z);
 	switch (keyIndex)
 	{		
 		//movecameraforward
@@ -419,6 +431,10 @@ bool GraphicsClass::HandleKeyboardInput(unsigned int keyIndex){
 
 		//movecameradown
 		case(VK_CONTROL): m_Camera->SetPosition(camX, camY-offset, camZ);break;
+
+		case(187):sphereNode->setTranslation(x,y, z+0.1);   break;
+
+		case(189):sphereNode->setTranslation(x,y, z-0.1);   break;
 
 		default:cout << "HandleInput (Not handled): " << keyIndex << endl; break;
 	}
