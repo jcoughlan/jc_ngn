@@ -95,7 +95,7 @@ void MD5Anim::UpdateMD5Model(Model3D& MD5Model, float deltaTime, int animation, 
 
 				// Compute the normals for this frames skeleton using the weight normals from before
 				// We can comput the normals the same way we compute the vertices position, only we don't have to translate them (just rotate)
-				XMVECTOR tempWeightNormal = XMVectorSet(tempWeight.normal.x, tempWeight.normal.y, tempWeight.normal.z, 0.0f);
+				XMVECTOR tempWeightNormal = XMVectorSet(tempWeight.normal.x, tempWeight.normal.y, tempWeight.normal.z, 1.0f);
 
 				// Rotate the normal
 				XMStoreFloat3(&rotatedPoint, XMQuaternionMultiply(XMQuaternionMultiply(tempJointOrientation, tempWeightNormal), tempJointOrientationConjugate));

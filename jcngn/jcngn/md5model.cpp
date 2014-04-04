@@ -232,6 +232,9 @@ bool MD5Mesh::LoadMD5Model(std::wstring filename, ID3D11Device* m_D3D)
 							fileIn >> tempVert.position.x				// Store tex coords
 								>> tempVert.position.y;	
 
+							tempVert.texture.x = tempVert.position.x;
+							tempVert.texture.y = tempVert.position.y;
+
 							fileIn >> checkString;						// Skip ")"
 
 							fileIn >> tempVert.StartWeight;				// Index of first weight this vert will be weighted to
@@ -345,11 +348,13 @@ bool MD5Mesh::LoadMD5Model(std::wstring filename, ID3D11Device* m_D3D)
 					// without having to work with the entire vertex structure.
 				}
 
+				
 				// Put the positions into the vertices for this subset
 				for(int i = 0; i < subset.vertices.size(); i++)
 				{
 					subset.vertices[i].position = D3DXVECTOR3(subset.positions[i].x,subset.positions[i].y,subset.positions[i].z);
-					subset.vertices[i].texture = D3DXVECTOR2(subset.positions[i].x,subset.positions[i].y);
+					
+					subset.vertices[i].texture = D3DXVECTOR2( subset.vertices[i].texture.x, subset.vertices[i].texture.y);
 				}
 
 				//*** Calculate vertex normals using normal averaging ***///
