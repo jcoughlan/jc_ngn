@@ -84,19 +84,17 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	planeNode = new SceneNode( PLANE_MESH, m_D3D->GetDevice(), L"../Engine/data/stone02.dds",L"../Engine/data/bump01.dds",BUMP_MAP);
 	
-	md5Node = new SceneNode("../Engine/data/md5Bob/bob_lamp_update_export.md5mesh", m_D3D->GetDevice(), LIGHT);
+	md5Node = new SceneNode("../Engine/data/md5Bob/bob_lamp_update.md5mesh", m_D3D->GetDevice(), LIGHT);
 	md5Anim = new MD5Anim();
 
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-	std::wstring wfilename = converter.from_bytes("../Engine/data/md5Bob/bob_lamp_update_export.md5anim");
+	std::wstring wfilename = converter.from_bytes("../Engine/data/md5Bob/bob_lamp_update.md5anim");
 	md5Anim->LoadMD5Anim(wfilename, md5Node->GetMD5Mesh()->md5Model);
 	m_sceneNodeList->AddSceneNode(cubeNode);
 	m_sceneNodeList->AddSceneNode(sphereNode);
 	m_sceneNodeList->AddSceneNode(planeNode);
 	m_sceneNodeList->AddSceneNode(md5Node);	
-	m_sceneNodeList->AddSceneNode(lightIndicatorNode);	
-
-	
+	m_sceneNodeList->AddSceneNode(lightIndicatorNode);		
 
 	md5Node->setScale(0.3,0.3,0.3);
 	md5Node->setTranslation(0,-1,2);
@@ -407,7 +405,9 @@ bool GraphicsClass::HandleKeyboardInput(unsigned int keyIndex){
 	float otherPosY = offset * -sinf( pitchRadian );
 	float otherPosZ = offset *  cosf( yawRadian ) * cosf( pitchRadian );	
 
-	float x, y, z = 0;  sphereNode->getTranslation(x,y,z);
+	float x = m_Light->GetDirection().x;
+	float y = m_Light->GetDirection().y;
+	float z = m_Light->GetDirection().z;
 	switch (keyIndex)
 	{		
 		//movecameraforward
@@ -432,9 +432,9 @@ bool GraphicsClass::HandleKeyboardInput(unsigned int keyIndex){
 		//movecameradown
 		case(VK_CONTROL): m_Camera->SetPosition(camX, camY-offset, camZ);break;
 
-		case(187):sphereNode->setTranslation(x,y, z+0.1);   break;
+		case(187):m_Light->SetDirection(x+0.1,y, z);   break;
 
-		case(189):sphereNode->setTranslation(x,y, z-0.1);   break;
+		case(189):m_Light->SetDirection(x-0.1,y, z-0.1);   break;
 
 		default:cout << "HandleInput (Not handled): " << keyIndex << endl; break;
 	}

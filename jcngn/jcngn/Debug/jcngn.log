@@ -1,1 +1,13 @@
-﻿
+﻿  graphicsclass.cpp
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\objimporter.h(71): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(99): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(99): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(99): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(110): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(110): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(110): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(435): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(437): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(437): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+c:\users\james\documents\github\jc_ngn\jcngn\jcngn\graphicsclass.cpp(597): warning C4715: 'GraphicsClass::InitializeShaders' : not all control paths return a value
+  jcngn.vcxproj -> C:\Users\James\Documents\GitHub\jc_ngn\jcngn\Debug\jcngn.exe
